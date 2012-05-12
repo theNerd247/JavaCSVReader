@@ -3,4 +3,9 @@ FOR: Java based FRC robots.
 REQUIRED APIs: Java 1.3.0 or less (comes standard with FRC) 
 DESCRIPTION: 
 	This is a basic code that can be used to allow the robot to read CSV files (Comma Seperated Values), and write them. This will allow for the program to contain an upper level of programming in which custom config files can be written to allow quick changes to robot properties and data. 
-
+NOTES ON CSV STYLING:
+	Basic CSV styles are simple: data seperated by commas. For this CSV reader we are taking it a level up and adding some styling to it. That is, a file header is used to denote what type of data is going in the file and how it is organized. So far it is a simple: TitleA,TitleB,...,# ...where the # acts as an "end of header" statement. 
+	You can change the EOH (end of header) statement, you just have to change the CSV file headerDeliminator variable.
+	Other defaults include: end of line and data seperator characters, which are ";" and "," respectively. As with the EOH char these can be changed for any CSVFile object.
+	
+	Note: The encoding for a file can be changed, but ASCII is the only one tested SO FAR.  
