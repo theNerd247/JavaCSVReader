@@ -1,0 +1,14 @@
+!-|;|,!
+-Team,Foo,Bar-
+3,2,4;
+4,3,2;
+-time,l,r,both-
+1,2,3,4;
+-Name,Number,Age-
+a,b,c;
+d,e,f;
+g,h,i;
+Apples,bannans,oranges;
+plu,flu,blu;
+cucumbers,grapes,berries;
+shawn,noah,ian;
