@@ -1,0 +1,4 @@
+5/14/12
+  -ADD: main header delim functionality to header parser. 
+  -ADD: header parser container to contain data once it has been parsed. 
+  	IDEAS: Vector buffer.
