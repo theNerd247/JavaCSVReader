@@ -120,6 +120,7 @@ public class CSVFile
 			//each header info is stored as an array
 			String[] temp = headers[i];
 			String name = new String();
+
 			for(int k=0;k<temp.length;k++)
 			{
 				name+=StringUtils.split(temp[k],")");

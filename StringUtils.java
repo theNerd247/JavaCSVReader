@@ -10,6 +10,11 @@ public class StringUtils
 	public static String[] split(String input, String delimiter, int start){return split(input,delimiter,true,start);}
 	//split but DON'T return data past the last delimiter
 	public static String[] rawSplit(String input, String delimiter){return split(input,delimiter,false,0);}
+	//split inbetween two characters
+	public static String[] split(String input, String firstDel, String secondDel)
+	{
+		
+	}
 
 	//split data found only in between a given delimiter - similiar to parsing html
 	public static String[] tagSplit(String input, String delimiter)
