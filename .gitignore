@@ -1,6 +1,12 @@
+#Temp Files#
+############
+#from vim#
+*.swp
+
 #Make Files#
 ############
 Make*
 
 #Testing Files#
+###############
 test.txt
