@@ -130,7 +130,7 @@ public class CSVFile
 			}
 
 			//after parsing the info, create the data object and add it to the list
-			CSVDataHeader(dataTypes,name);//add the data to the new data header and store it
+			CSVDataHeader(dataTypes,name);
 		}	  
 	}
 	

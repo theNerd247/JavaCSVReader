@@ -14,16 +14,9 @@ public class CSVParser
 		return parseHeader(rawData,headerDelim,dataDelim);
 	}
 
-	public static String[][] parseData(String rawData,String headerDelim, String lineDelim)
+	public static String[][] parseData(String rawData,String headerDelim, String )
 	{
-		//grab data in form "d1,d2,...,dn;"
-		String[] dataSets = StringUtils.invertTagSplit(rawData,headerDelim);
 		
-		Vector buffer = new Vector();
-		for(int i=0;i<dataSets.length;i++)
-		{
-			
-		}
 	}
 
 	//searches through a document and collects all header data
