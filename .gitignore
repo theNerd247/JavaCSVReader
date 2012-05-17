@@ -1,3 +1,6 @@
+#This gitignore file is for this remote only#
+.gitignore
+
 #Temp Files#
 ############
 #from vim#
@@ -6,6 +9,7 @@
 #Make Files#
 ############
 Make*
+Main
 
 #Testing Files#
 ###############
