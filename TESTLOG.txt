@@ -1,0 +1,18 @@
+Test Log for Classes and their functions
+============================================
+Document Structure:
+Date
+<TAB>"-Class::"
+<TAB><TAB>"method --STATUS AND NOTES"
+=============================================
+PRE 5/16/12: 
+	-CSVFile::
+		readFileData() -- successfully opens a given file and reads data. !ASCII encoding only tested!
+		writeFileData() --successfully writes to a given file . !ASCII encoding only tested!
+		getMainHeader() --successfully sets the files formatting delimiters using formatting as of current README.txt
+		getHeader() --untested
+
+	-StringUtils::
+		-ALL methods work as described in documentation
+	
+	
