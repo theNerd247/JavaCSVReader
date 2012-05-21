@@ -1,26 +1,29 @@
 JAVA CSV READER Library
 FOR: Java based FRC robots. 
-REQUIRED APIs: Java 1.3.0 or less (comes standard with FRC) 
+REQUIRED APIs: Standard FRC Java Lib (as of 2012)
 DESCRIPTION: 
-	This is a basic code that can be used to allow the robot to read CSV files (Comma Seperated Values), and write them. This will allow for the program to contain an upper level of programming in which custom config files can be written to allow quick changes to robot properties and data. 
+	This is a basic code that can be used to allow the robot to read CSV files (Character Seperated Values), and write them. This will allow for the program to contain an upper level of programming in which custom config files can be written to allow quick changes to robot properties and data. 
 
 NOTES ON CSV STYLING:
 
-This program uses a CSV like file formatting. Data is contained in Character seperated values - not always a comma. Current developement of this program focuses on letting end users develop custom formatting to their documents. Each file contains a single special character to seperate data (this is called the data delimiter). Thus, a person can create a CSV file that uses the "-" character, to seperate data.
+At the begining of each document the user must include the file header data. This data is used to determine how the parser is to read the file. The format of the header is as follows: <DSV><Header_Delimiter><DSV><Line_Delimiter><DSV><Data_Delimiter><DSV> Where <DSV> represents a single any single character used to seperate the file header data. 
 
-A goal of this program is to implement as much data organization as possible. As the cRIO has limited file space, it is more efficient to only have the user worry about downloading and fetching only one file to and from the cRIO. Thus, the file must have a way to seperate data sets. Thus, data is seperated into "heads". A head for a data is a simple line of data (seperated using the given data delimiter) that contains how a set of data is formatted. This allows the parser to determine how to deal with the data once it is read from the file. An example of a header for storing personal info: #Name,Age,Phone-Number#   From the example, the header delimiter (special character that designates that the given line is a header) is "#" while the data delimiter is ",". 
+Headers: Headers are sets of related data in this CSV file. They are denoted by <Header_Delimiter> (see above) and directly followed by the data for the new header. Each Header denoting line MUST be formatted as follows: <Header_Delimiter>(JPDT)DescripterData,(JPDT)...etc...<Header_Delimiter> . For example, a new header is created by: #(String)Name,(int)Age,(double)Height Where # is the <Header_Delimiter> and String, int, double are the (JPDT) or (java Primitive Data type). (A Java Primitive data type are all data types that come wit h java. This program allows String to act as a JPDT). 
 
-Finally data sets are seperated by a a line delimiter to designate the end of a data set for a given header. For example:
+Data: Data within a given header is formated as follows: <Line_Delimiter>Data1,Data2,Data3,...etc . For example: ;Bob,12,4.5 Where ";" is the <Line_Delimiter> and Bob,12,4.5 are the data for the given header
 
-#Name,Age,Phone#
-Bob,12,1234567;
-Dan,14,1891011;
-...
+EXAMPLE CSV FILE:
 
-in the given example, the header delimiter is "#", the data delimiter is "," and the line delimiter is ";". Thus 1 data set for the given header would be "Bob,12,1234567"and it is shown to end by the line delimiter ";".
+|#|;|,|
+#(String)Name,(int)Age,(double)height
+;Bob,12,3,2
+;Larry,7,8.6
+#(String)Device,(int)port
+;Jag,3
+;Relay,1
+;Solenoid,2
+#(String)Property,(String)Name,(double)value
+;DistancePerCount,LeftEncoder,3.2333234
+;MaxSpeed,MaxSpeed,3
 
-In order for a file to tell the program which characters that it is going to use as its delimiters it must include a standard MainHeader on the very first line of the file. The current standard for the MainHeader is as follows:
-
-"|"!HeaderDELIM|LineDELIM|DataDELIM!
-
-The "!" character designates that the encased characters are the MainHeader. The char-set ' "|" ' is to designate the main header data delimiter, or how the program is to read the data in the main header. Every CSV file written for this program MUST contain its first line like so. 
+NOTICE: each data set is seperated by a new line character (not shown). This includes any header data. 

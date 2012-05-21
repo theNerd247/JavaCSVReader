@@ -26,10 +26,10 @@ public class CSVFile
 	{
 		this.path = path;
 		this.encoding = encoding;
+		data = new Vector();
 		//go ahead and read the file and set the data structures
 		readFileData();
-		setMainHeader();
-		setHeaders();
+		parseFile(fileData);
 	}
 
 	//set the line and data delimiters to tell the parser
@@ -38,9 +38,9 @@ public class CSVFile
 	public void setDataDelimiter(String d){dataDelimiter = d;}
 	public void setHeaderDelimiter(String d){headerDelimiter = d;}
 
-	//return data duh...
+	//return data
 	public String getRawData(){return fileData;}
-	public String[][] getData(){return data;}
+	public Vector getData(){return data;}
 	public String[] getHeader(){return mainHeader;}
 
 	//returns data from a given file
@@ -93,45 +93,63 @@ public class CSVFile
 		}
 	}
 
-	//search for the Main header of the file that tells which type of delimiters are used
-	public void setMainHeader()
+	//read through the raw data of a file and parse the data
+	//into headers (held in CSVDataHeader class)
+	public void parseFile(String rawInput)
 	{
-		//search for the lines for the delimiters and set them
-		String[][] buffer = CSVParser.parseHeader(getRawData());
-		//check to make sure that there is actually data to parse
-		if(buffer == new String[0][0]) return;
-		mainHeader = buffer[0];
-		headerDelimiter=mainHeader[0];
-		lineDelimiter=mainHeader[1];
-		dataDelimiter=mainHeader[2];
-		//then split the delimiter from the rest of the file
-		int begin = getRawData().indexOf("!",1);
-		fileData = getRawData().substring(begin+1);
-	}	
-
-	public void setHeaders()
-	{
-		//scan through the file for each header list
-		String[][] headers = CSVParser.parseHeader(getRawData(),headerDelimiter,dataDelimiter);
-
-		for(int i=0;i<headers.length;i++)
+		//first split the raw input using new lines
+		String[] lines = StringUtils.split(rawInput,"\n");
+		int length = lines.length;
+		CSVDataHeader currentHeader = null;
+		for(int i=0;i<length;i++)
 		{
-			String[] dataTypes = new String[headers[i].length];
-			String name = new String();
-			for(int j =0;j<headers[i].length;j++)
+			String temp = lines[i];
+			if(temp.equals(new String()) || temp == null) continue;
+			//first get the document delimiter data
+			if(i==0)
 			{
-				//splits the current header element and returns in format "(Type","Name"
-				String temp = StringUtils.split(headers[i][j],")");
-				name+=temp[1];
-				//if the current element is not the last add a comma to the name
-				if(j<headers[i].length-1) name+=",";
-
-				dataTypes[j] = temp[0].substring(1);
+				String del = temp.substring(0,1);
+				String[] dels = StringUtils.rawSplit(temp.substring(1),del);
+				headerDelimiter=dels[0];
+				lineDelimiter=dels[1];
+				dataDelimiter=dels[2];
+				System.out.println(headerDelimiter+" "+lineDelimiter+" "+dataDelimiter);
+				continue;
 			}
-
-			//after parsing the info, create the data object and add it to the list
-			CSVDataHeader(dataTypes,name);//add the data to the new data header and store it
-		}	  
-	}
-	
+			//determine what to do with the given line by the first character
+			String key = temp.substring(0,1);
+			if(key.equals(headerDelimiter))
+			{
+				//save the currentHeader before creating a new one
+				if(currentHeader != null) data.add(currentHeader);
+				//if the first character is a header character then create a new header
+				//based off of the info given. 
+				String[] rawHeader = StringUtils.split(temp.substring(1),dataDelimiter);
+				String[] dataTypes = new String[rawHeader.length];
+				String name = new String();
+				for(int j=0;j<rawHeader.length;j++)
+				{
+					int ind = rawHeader[j].indexOf(")");
+					name+= rawHeader[j].substring(ind+1);
+					if(j<rawHeader.length-1) name+=",";
+					dataTypes[j] = rawHeader[j].substring(1,ind);
+				}
+				currentHeader = new CSVDataHeader(dataTypes,name);
+			}
+			else if(key.equals(lineDelimiter))
+			{
+				if(currentHeader == null) continue;
+				String[] rawData = StringUtils.split(temp.substring(1),dataDelimiter);
+				String[] header = currentHeader.getHeader();
+				//after getting the rawData from the file and the current header for the 
+				//dataHeader filter through the data - limiting only to the number of header 
+				//data available. 
+				for(int j=0;j<header.length;j++)
+				{
+					currentHeader.addRaw(rawData[j],header[j]);
+				}
+			}
+		}
+		data.add(currentHeader);
+	}	
 }

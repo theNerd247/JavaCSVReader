@@ -1,21 +1,20 @@
+import java.util.Vector;
 public class CSVMain 
 {
 	public static void main(String[] args)
 	{
-		CSVFile file = new CSVFile("C:\\Users\\Developer\\Desktop\\GIT\\JavaCSVReader\\test.txt");
-		
-		file.readFileData();
-		file.setMainHeader();
-		String[] h = file.getHeader();
-		System.out.println(h[0]+" "+h[1]+" "+h[2]);
-		String[][] data = CSVParser.parseHeader(file.getRawData(),h[0],h[2]);
+		CSVFile file = new CSVFile("/home/boys/Documents/Noah/src/GIT/JavaCSVReader/test.txt");//"C:\\Users\\Developer\\Desktop\\GIT\\JavaCSVReader\\test.txt");
 
-		for(String[] i : data)
-		{
-			System.out.println();
-			for(String d : i)
-				System.out.print(d+",");
-		}
+		Vector dta = file.getData();
+		CSVDataHeader header = (CSVDataHeader)dta.elementAt(0);
+		Vector data = header.getData();
+		Vector intData = (Vector)(data.elementAt(0));
+		//Integer integer= (Integer)(intData.elementAt(1));
+		String[] name = header.getHeader();
+		for(String i : name)
+			System.out.print(i+",");
+		
 		System.out.println("\nend");
+		
 	}
 }	

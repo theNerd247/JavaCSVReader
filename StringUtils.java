@@ -36,10 +36,10 @@ public class StringUtils
 	}
 
 	//same as tagsplit, but return the data that is not encased in the given delimiter
-	public static String[] invertTagSplit(String input, Strin delimiter)
+	public static String[] invertTagSplit(String input, String delimiter)
 	{
 		int start = input.indexOf(delimiter);
-		return tagSplit(input.substring(start+1));
+		return tagSplit(input.substring(start+1),delimiter);
 	}
 	
 	//used to scan through the given text and return all data before or inbetween the given delimiter
