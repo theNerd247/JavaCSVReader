@@ -22,8 +22,17 @@ public class CSVDataHeader
 		for(int i=0;i<header.length;i++)
 		{
 			data.add(i,new Vector());
-		}
-		
+		}	
+	}
+
+	//add another header column
+	public void newHeader(String type, String name)
+	{
+		String[] head = new String[header.length+1]
+		for(int i=0;i<header.length;i++)
+			head[i] = header[i];
+		head[header.length] = type;
+		this.name+=name;
 	}
 
 	//add data to the specified index
@@ -75,6 +84,5 @@ public class CSVDataHeader
 	public Vector getData(){return data;}
 	public String[] getHeader(){return header;}
 	public String getName(){return name;}
-	
 }
 
