@@ -1,6 +1,6 @@
 import java.util.Vector;
 
-//data container for CSV data header
+/// Class implementing a data container for CSV data header
 public class CSVDataHeader
 {
 	//the header variable contains the blue print for the data types 
@@ -14,7 +14,7 @@ public class CSVDataHeader
 	//from the example above this String should be "Name,Age,Number"
 	private String name;
 
-	public CSVDataHeader(String[] header,String name)
+	public CSVDataHeader(String[] header, String name)
 	{
 		this.header = header;
 		this.name = name;
@@ -42,6 +42,7 @@ public class CSVDataHeader
 			if(type.equals(header[i])){ add(data,i); break;}
 		}	  
 	}
+
 	public void add(int value){	add(new Integer(value),"int");}	
 	public void add(long value){add(new Long(value),"long");} 
 	public void add(boolean value){add(new Boolean(value),"boolean");}
@@ -54,20 +55,20 @@ public class CSVDataHeader
 	public void addRaw(String rawData, String headerName)
 	{
 		try{
-		if(headerName.equals("String"))
-			addString(new String(rawData));
-		else if(headerName.equals("int"))
-			add((Integer.parseInt(rawData)));
-		else if(headerName.equals("double"))
-			add((Double.parseDouble(rawData)));
-		else if(headerName.equals("long"))
-			add((Long.parseLong(rawData)));
-		else if(headerName.equals("float"))
-			add((Float.parseFloat(rawData)));
-		else if(headerName.equals("bool"))
-			add((Boolean.parseBoolean(rawData)));
-		else
-			return;
+			if(headerName.equals("String"))
+				addString(new String(rawData));
+			else if(headerName.equals("int"))
+				add((Integer.parseInt(rawData)));
+			else if(headerName.equals("double"))
+				add((Double.parseDouble(rawData)));
+			else if(headerName.equals("long"))
+				add((Long.parseLong(rawData)));
+			else if(headerName.equals("float"))
+				add((Float.parseFloat(rawData)));
+			else if(headerName.equals("bool"))
+				add((Boolean.parseBoolean(rawData)));
+			else
+				return;
 		}
 		catch(Exception e){System.out.println(e.getMessage());}
 	}
