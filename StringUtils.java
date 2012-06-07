@@ -1,6 +1,8 @@
 import java.util.Vector;
 
 //class to extend the utilities of the String class.
+//NOTE: this class may contain methods that have nothing to do with the JavaCSVReader lib. 
+//    : extra methods are kept for robotics team's usage in their FRC code.
 public class StringUtils
 {
 	//overloads of split
@@ -47,18 +49,21 @@ public class StringUtils
 	public static String[] split(String str, String delimiter,boolean withEnd,int initIndex)
 	{
 		String input = str;
+		//quit if: data is null or is an empty string
 		if(input == null || input.equals(new String()) || input == "") return new String[0];
 
-		//create a buffer array for the worst case scenario amount of data
+		//create a buffer array for the worst case scenario of data size
 		Vector dataBuffer = new Vector();
 		int index = 0;
 		
+		//cut the string begining at the given index if needed
 		if(initIndex > 0)
 			input = input.substring(initIndex);
 
 		//take the current string, split it into two strings: the next piece of data (before delimiter)
 		//and the rest of the input string (after the delimiter). Set the input to the
-		//later of the two strings and repeat.  
+		//later of the two strings and repeat. 
+		//Break IF: input is null, we have reached the end of all the data we want 
 		while(true)
 		{
 			if(input == null) break;
@@ -75,6 +80,7 @@ public class StringUtils
 			dataBuffer.add(sub1);
 			input = sub2;
 		}	
+		//convert the buffer to an array and return it
 		String[] d = new String[dataBuffer.size()];
 	
 		int l = dataBuffer.size();
@@ -99,7 +105,7 @@ public class StringUtils
 
 		return s;
 	}
-
+//==============================FOR TESTING THIS CLASS==========================================|
 	public static void main(String[] args)
 	{
 		CSVFile file = new CSVFile("/home/boys/Documents/Noah/src/GIT/JavaCSVReader/test.txt");
