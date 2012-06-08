@@ -3,7 +3,7 @@ public class CSVMain
 {
 	public static void main(String[] args)
 	{
-		CSVFile file = new CSVFile("/home/boys/Documents/Noah/src/GIT/JavaCSVReader/test.txt");//"C:\\Users\\Developer\\Desktop\\GIT\\JavaCSVReader\\test.txt");
+		CSVFile file = new CSVFile("test.txt");//"C:\\Users\\Developer\\Desktop\\GIT\\JavaCSVReader\\test.txt");
 
 		Vector dta = file.getData();
 		CSVDataHeader header = (CSVDataHeader)dta.elementAt(0);

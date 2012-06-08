@@ -8,27 +8,15 @@ import javax.swing.JLabel;
  *  |--------|--------|--------|
  *  | data 1 | data 2 | data 3 |
  *  |--------------------------|
- * /
+ */
 public class DataSheet extends JPanel
 {
 	CSVDataHeader header;
 	JLabel title;
 	public DataSheet(CSVDataHeader header)
 	{
+		super();
 		this.header = header;
-		title = new JPanel(head.getName());
-		
+		title = new JLabel(header.getName());
 	}
-	
-	public void removeHeader(int col)
-	{
-		
-	}
-	public void insertHeaderColumn(String Name, String type)
-	{
-		data.newHeader(type,Name);
-		table.
-	}
-
-	
 }	

@@ -3,7 +3,8 @@ import javax.swing.JTextField;
 public class DataCell extends JTextField
 {
 	String contents;
-	public DataCell(){this(new String())}
+	String dataType;
+	public DataCell(){this(new String());}
 	public DataCell(String text)
 	{
 		contents = text;
