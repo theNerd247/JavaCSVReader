@@ -28,7 +28,7 @@ public class CSVDataHeader
 	//add another header column
 	public void newHeader(String type, String name)
 	{
-		String[] head = new String[header.length+1]
+		String[] head = new String[header.length+1];
 		for(int i=0;i<header.length;i++)
 			head[i] = header[i];
 		head[header.length] = type;
