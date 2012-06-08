@@ -29,6 +29,7 @@ public class CSVFile
 		data = new Vector();
 		//go ahead and read the file and set the data structures
 		readFileData();
+		if(fileData == new String()) return;//if the file is empty then do nothing 
 		parseFile(fileData);
 	}
 
@@ -55,11 +56,12 @@ public class CSVFile
 			//read data and check if it is the EOF character, if not then 
 			//add the concatenate the data to the current data string using the 
 			//given encoding type
-		
 			while(true)
 			{
 				int raw = in.read();
 				if(raw == -1) break;
+				//read the value and convert to a a string by storing the value in a 1d,1cell byte array
+				//then use that to create a new string and append to the current data. 
 				byte value = (new Integer(raw)).byteValue();
 				byte[] temp = {value};
 				data = data+new String(temp,encoding);
@@ -101,9 +103,11 @@ public class CSVFile
 		String[] lines = StringUtils.split(rawInput,"\n");
 		int length = lines.length;
 		CSVDataHeader currentHeader = null;
+		//iterate through each line in the file and parse it according to the first character found
 		for(int i=0;i<length;i++)
 		{
 			String temp = lines[i];
+			//if it's a blank line then just skip it and go on
 			if(temp.equals(new String()) || temp == null) continue;
 			//first get the document delimiter data
 			if(i==0)
@@ -113,7 +117,7 @@ public class CSVFile
 				headerDelimiter=dels[0];
 				lineDelimiter=dels[1];
 				dataDelimiter=dels[2];
-				System.out.println(headerDelimiter+" "+lineDelimiter+" "+dataDelimiter);
+			//	System.out.println(headerDelimiter+" "+lineDelimiter+" "+dataDelimiter);
 				continue;
 			}
 			//determine what to do with the given line by the first character
@@ -153,3 +157,5 @@ public class CSVFile
 		data.add(currentHeader);
 	}	
 }
+
+//later add method for converting a 2-D Vector into a raw string for writing to a file
