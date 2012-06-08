@@ -1,21 +1,23 @@
 import java.util.Vector;
-import javax.swing.JTable;
-
+import javax.swing.JPanel; 
+import javax.swing.JLabel;
 //gui container for each a header of data
-public class DataSheet
+/*
+ *  ========Name,Name,Name======
+ *  |dataType|dataType|dataType|
+ *  |--------|--------|--------|
+ *  | data 1 | data 2 | data 3 |
+ *  |--------------------------|
+ * /
+public class DataSheet extends JPanel
 {
 	CSVDataHeader header;
-	JTable table;
-	TableModel model;
+	JLabel title;
 	public DataSheet(CSVDataHeader header)
 	{
 		this.header = header;
-		String[] types = header.getHeder();
-		Vector v = new Vector(types.length);
-		for(String i : types)
-			v.add(i);
-		table = new JTable(header.getData(),v);
-		model = table.getModel();
+		title = new JPanel(head.getName());
+		
 	}
 	
 	public void removeHeader(int col)

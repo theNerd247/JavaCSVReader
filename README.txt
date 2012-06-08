@@ -1,6 +1,6 @@
 JAVA CSV READER Library
 FOR: Java based FRC robots. 
-REQUIRED APIs: Standard FRC Java Lib (as of 2012)
+REQUIRED APIs: Standard FRC Java Lib (as of 2012) - not Standard API library.
 DESCRIPTION: 
 	This is a basic code that can be used to allow the robot to read CSV files (Character Seperated Values), and write them. This will allow for the program to contain an upper level of programming in which custom config files can be written to allow quick changes to robot properties and data. 
 
