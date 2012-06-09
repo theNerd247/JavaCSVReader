@@ -61,6 +61,22 @@ public class GUIMain
 						}
 					});
 				fileMenu.add(save);
+				JMenuItem saveCopy = new JMenuItem("save a copy");
+					saveCopy.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							System.out.println("saving file copy");
+							GUIManager.save();//later add method call to open a new file
+						}
+					});
+				fileMenu.add(saveCopy);
+				JMenuItem saveAs = new JMenuItem("saveAs");
+					saveAs.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							System.out.println("saving as file");
+							GUIManager.saveAs();//later add method call to open a new file
+						}
+					});
+				fileMenu.add(saveAs);
 				JMenuItem exit = new JMenuItem("exit");
 					exit.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
@@ -72,6 +88,14 @@ public class GUIMain
 			menuBar.add(fileMenu);
 			//frcMenu
 			JMenu frcMenu = new JMenu("FRC");
+				JMenuItem newRobotSheet = new JMenuItem("New Roobt Sheet");
+					newRobotSheet.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							System.out.println("create new robot sheet");
+							GUIManager.newRobotSheet();
+						} 
+					});
+				frcMenu.add(newRobotSheet);
 			menuBar.add(frcMenu);
 			JMenu helpMenu = new JMenu("Help");
 				JMenuItem about = new JMenuItem("about");
