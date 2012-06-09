@@ -111,7 +111,7 @@ public class StringUtils
 		CSVFile file = new CSVFile("/home/boys/Documents/Noah/src/GIT/JavaCSVReader/test.txt");
 		
 //		file.readFile();
-		String s = file.getRawData();	
+		String s = file.getRawFileText();
 		String[] data = StringUtils.tagSplit(s,"#");
 		for(String i : data)
 			System.out.println(i);

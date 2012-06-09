@@ -1,89 +1,73 @@
 import java.util.Vector;
 
-//calss implementing data container for CSV data header
+//class implementing data container for CSV data header
 public class CSVDataHeader
 {
-	//the header variable contains the blue print for the data types 
-	//that this object is to hold. For example if (String)Name,(int)Age,(double)Number
-	//are the raw data of a CSV file then the blue print should go as follows
-	//header[0] = "String"; header[1] = "int"; header[2] = "double";
-	private String[] header;
-	//this vector is to contain other vectors to form a 2-d Array pattern. 
+	//a vector is used to contain sub-vectors that will eventually hold data. 
+	//the key to using vectors instead of a 2-D array is for  the purpose of 
+	//resizing.
 	private Vector data;
-	//this is the descriptor that differenciates this header of data from other header patterns. 
+	//this is the descriptor that differentiates this header of data from other header patterns. 
 	//from the example above this String should be "Name,Age,Number"
-	private String name;
+	private String[] names;
+	private String title;
 
-	public CSVDataHeader(String[] header,String name)
+	public CSVDataHeader(String title, String[] names)
 	{
-		this.header = header;
-		this.name = name;
+		this.names = names;
+		this.title = title;
 		data = new Vector();
-		for(int i=0;i<header.length;i++)
+		//create empty vectors to contain the data
+		for(int i=0;i<names.length;i++)
 		{
 			data.add(i,new Vector());
 		}	
 	}
 
+	//add data to the end of a specified column
+	public void appendToColumn(String new_data,int col)
+	{
+		((Vector)data.elementAt(col)).add(new_data);
+	}
+	
+	//append data to the specified 2-d index
+	public void addData(String new_data, int row, int col)
+	{
+		((Vector)data.elementAt(col)).insertElementAt(new_data,row);
+	}
 	//add another header column
-	public void newHeader(String type, String name)
+	public void newDataColumn(String name)
 	{
-		String[] head = new String[header.length+1];
-		for(int i=0;i<header.length;i++)
-			head[i] = header[i];
-		head[header.length] = type;
-		this.name+=name;
-	}
-
-	//add data to the specified index
-	public void add(Object data,int index)
-	{
-		((Vector)this.data.elementAt(index)).add(data);
-	}
-
-	//if no index was given then guess where the data is supposed to go 
-	//by getting the data class type and matching it with a header blue print
-	public void add(Object data,String type)
-	{
-		int index = 0;
-		for(int i=0;i<header.length;i++)
-		{
-			if(type.equals(header[i])){ add(data,i); break;}
-		}	  
-	}
-
-	public void add(int value){	add(new Integer(value),"int");}	
-	public void add(long value){add(new Long(value),"long");} 
-	public void add(boolean value){add(new Boolean(value),"boolean");}
-	public void add(float value){add(new Float(value),"float");} 
-	public void add(double value){add(new Double(value),"double");}
-	public void addString(String value){add(value,"String");}
-
-	//convert a raw string to an object that contains its value and
-	//insert it into the header
-	public void addRaw(String rawData, String headerName)
-	{
-		try{
-			if(headerName.equals("String"))
-				addString(new String(rawData));
-			else if(headerName.equals("int"))
-				add((Integer.parseInt(rawData)));
-			else if(headerName.equals("double"))
-				add((Double.parseDouble(rawData)));
-			else if(headerName.equals("long"))
-				add((Long.parseLong(rawData)));
-			else if(headerName.equals("float"))
-				add((Float.parseFloat(rawData)));
-			else if(headerName.equals("bool"))
-				add((Boolean.parseBoolean(rawData)));
-			else
-				return;
-		}
-		catch(Exception e){System.out.println(e.getMessage());}
+		//manually grow the names
+		String[] temp = new String[names.length+1];
+		for(int i=0;i<names.length;i++)
+			temp[i] = names[i];
+		temp[temp.length-1] = name;
+		data.add(new Vector());
 	}
 
 	public Vector getData(){return data;}
-	public String[] getHeader(){return header;}
-	public String getName(){return name;}
+	public String getTitle(){return title;}
+	public String[] getNames(){return this.names;}
+
+	//for testing this class
+	public static void main(String[] args)
+	{
+		String[] nams = {"Bob","Joe","Larry"};
+		CSVDataHeader header = new CSVDataHeader("TEST",nams);
+		header.appendToColumn("Tomatoe",0);
+		header.appendToColumn("WEIRD",1);
+		header.appendToColumn("Cucumber",2);
+	
+		Vector data = header.getData();
+	
+		System.out.println(header.getTitle());
+		String[] names = header.getNames();
+		for(String i : names)
+			System.out.print(i+",");
+		System.out.print("\n");
+		String d1 = (String)(((Vector)data.elementAt(0)).elementAt(0));
+		System.out.println(d1);
+	}
 }
 
