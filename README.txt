@@ -1,6 +1,6 @@
 ==================================================================================|
-|									JAVA CSV READER Library                       |
-|								  FOR: Java based FRC robots.                     |
+|                                   JAVA CSV READER Library                       |
+|                                 FOR: Java based FRC robots.                     |
 |  REQUIRED APIs: Standard FRC Java Lib (as of 2012) - not Standard API library.  |
 |=================================================================================|
 
