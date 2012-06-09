@@ -22,9 +22,10 @@ NOTES ON CHARACTER SERPARATED VALUES (CSV) FILE:
 	the last data set or an end of file. The term "header" refers to the
 	metadata its dataset. 
 
-	The metadata for a header contains the column names for that dataset (as if
-	it were a spreadsheet), and MUST be the FIRST line in a given data set. A
-	new line character (in ASCII it is "\n") ends the metadata for a data set. 
+	The metadata for a header contains the column names, and title for that
+	dataset (as if it were a spreadsheet), and MUST be the FIRST TWO lines in a
+	given data set. A new line character (in ASCII it is "\n") ends the
+	metadata for a data set. 
 
 	Data for a dataset is found in the next line after the metadata. Each piece
 	of data is seperated by the "data delimitter" character. The set of data is
@@ -35,20 +36,25 @@ NOTES ON CHARACTER SERPARATED VALUES (CSV) FILE:
 	different delimitters for the file. The firs line for each file must go as
 	follows:
 
-			<DELIM> HEADER_DELIM <DELIM> LINE_DELIM <DELIM> DATA_DELIM <DELIM>
+		<DELIM> HEADER_DELIM <DELIM> LINE_DELIM <DELIM> DATA_DELIM <DELIM>
 	It doesn't matter which character <DELIM> is as long as it's constant. 
 
 EXAMPLE CSV FILE:
 
 	|#|;|,| 
-	#(String)Name,(int)Age,(double)height 
+	#Students
+	#Name,Age,height 
 	;Bob,12,3,2 
 	;Larry,7,8.6
-	#(String)Device,(int)port 
+
+	#Robot-Devices
+	#Device,port 
 	;Jag,3 
 	;Relay,1 
 	;Solenoid,2
-	#(String)Property,(String)Name,(double)value
+
+	#Robot-Properties
+	#Property,Name,value
 	;DistancePerCount,LeftEncoder,3.2333234 
 	;MaxSpeed,MaxSpeed,3
 

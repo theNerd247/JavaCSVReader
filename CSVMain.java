@@ -5,15 +5,23 @@ public class CSVMain
 	{
 		CSVFile file = new CSVFile("test.txt");//"C:\\Users\\Developer\\Desktop\\GIT\\JavaCSVReader\\test.txt");
 
-		Vector dta = file.getData();
-		CSVDataHeader header = (CSVDataHeader)dta.elementAt(0);
-		Vector data = header.getData();
-		Vector intData = (Vector)(data.elementAt(0));
-		//Integer integer= (Integer)(intData.elementAt(1));
-		String[] name = header.getHeader();
-		for(String i : name)
-			System.out.print(i+",");
+		Vector dta = file.getHeaders();
 		
+		for(int i=0;i<dta.size();i++)
+		{ CSVDataHeader header = (CSVDataHeader)dta.elementAt(i);
+			System.out.println(header.getTitle());
+			for(String nm : header.getNames())
+				System.out.print(nm+",");
+			System.out.println();
+			Vector d = header.getData();
+			for(int c=0;c<d.size();c++)
+			{
+				Vector j=(Vector)d.elementAt(c);
+				for(int k=0;k<j.size();k++)
+					System.out.println((String)(j.elementAt(k)));
+				System.out.println("====-");
+			}
+		}
 		System.out.println("\nend");
 		
 	}
