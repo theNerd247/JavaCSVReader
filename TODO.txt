@@ -1,0 +1,13 @@
+5/14/12
+  -ADD: main header delim functionality to header parser.
+  -ADD: header parser container to contain data once it has been parsed. 
+  	IDEAS: Vector buffer.
+	SOLVED: CSVDataHeader class created
+
+5/16/12
+  -CLEAN: StringUtils class:: cleaner split function and less overriding of the function, rename functions to suit their actions
+  -FINISH: CSVFile::getHeaders ().
+
+5/20/12
+	-SOLVED ALL ABOVE: Successfully created parsing method that parses and stores all data from a file in an array of 2-d vectors
+	-ADD: GUI interface for managing a CSV file
