@@ -28,8 +28,9 @@ public class CSVFile
 		this.encoding = encoding;
 		headers = new Vector();
 		//go ahead and read the file and set the data structures
+		if(path.equals("") || path == null) return;
 		readFileData();
-		if(fileText == new String()) return;//if the file is empty then do nothing 
+		if(fileText == new String() || fileText == null) return;//if the file is empty then do nothing 
 		parseFile(fileText);
 	}
 
@@ -38,11 +39,19 @@ public class CSVFile
 	public void setLineDelimiter(String d){lineDelimiter = d;}
 	public void setDataDelimiter(String d){dataDelimiter = d;}
 	public void setHeaderDelimiter(String d){headerDelimiter = d;}
-
+	public String getLineDelimiter(){return lineDelimiter;}
+	public String getHeaderDelimiter(){return headerDelimiter;}
+	public String getDataDelimiter(){return dataDelimiter;}
+	
 	//return data
 	public String getRawFileText(){return fileText;}
 	public Vector getHeaders(){return headers;}
-
+	public void setHeaders(Vector newHeaders){headers=newHeaders;}
+	
+	//allow external control over the file
+	public String getPath(){return path;}
+	public void setPath(String pth){path=pth;}
+	
 	//returns data from a given file
 	private String readFileData()
 	{

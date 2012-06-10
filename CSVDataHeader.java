@@ -1,6 +1,7 @@
 import java.util.Vector;
 
 //class implementing data container for CSV data header
+//data in headers is constant once created. 
 public class CSVDataHeader
 {
 	//a vector is used to contain sub-vectors that will eventually hold data. 
@@ -30,6 +31,7 @@ public class CSVDataHeader
 		((Vector)data.elementAt(col)).add(new_data);
 	}
 	
+/*             COMMENTED OUT DUE TO NO USE
 	//append data to the specified 2-d index
 	public void addData(String new_data, int row, int col)
 	{
@@ -45,7 +47,7 @@ public class CSVDataHeader
 		temp[temp.length-1] = name;
 		data.add(new Vector());
 	}
-
+*/
 	public Vector getData(){return data;}
 	public String getTitle(){return title;}
 	public String[] getNames(){return this.names;}
