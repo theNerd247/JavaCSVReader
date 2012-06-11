@@ -13,8 +13,10 @@ public class DataFile extends JPanel
 	{
 		file = new CSVFile(path);
 		dataSheets = new Vector<DataSheet>();
-		if(path.equals("") || path == null) return;
+		if(path.equals("") || path == null) { setName("New file");return;}
+		setName(file.getFileName());	
 		//take the headers from the file and create data sheets from them
+		if(file.getHeaders().size() < 1) return;
 		for(int i=0;i<file.getHeaders().size();i++)
 		{
 			CSVDataHeader header = (CSVDataHeader)(file.getHeaders().elementAt(i));
@@ -22,13 +24,19 @@ public class DataFile extends JPanel
 		}
 	}
 
+	//interface to open dialog box
+	public String openFile()
+	{
+		return getPathDialog(false);
+	}
+	
 	public void saveFile()
 	{
 		//if the current path of the file is non existant then 
 		//open the save dialog and get one
 		if(file.getPath().equals(""))
 		{
-			String path = getPathDialog();
+			String path = getPathDialog(true);
 			if(path.equals("")) return;
 			file.setPath(path);
 		}
@@ -50,9 +58,13 @@ public class DataFile extends JPanel
 	} 
 
 	//get a path through dialog box
-	private String getPathDialog()
+	private String getPathDialog(boolean save)
 	{
-		int option = fileChooser.showSaveDialog(null);
+		int option = -1;
+		if(save)
+			option = fileChooser.showSaveDialog(null);
+		else
+			option = fileChooser.showOpenDialog(null);
 		switch(option)
 		{
 			case JFileChooser.APPROVE_OPTION: 

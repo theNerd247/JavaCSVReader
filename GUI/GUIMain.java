@@ -2,9 +2,12 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+
 import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GUIMain
 {
@@ -16,14 +19,32 @@ public class GUIMain
 		window = new JFrame("FRC CSV Reader Interface");
 		windowContent = window.getContentPane();
 	
+		initMenu();
 		initComponents();
-		window.setDefaultCloseOperation(3);
+		addClosingOperation();
 		window.setSize(600,450);
 		window.setVisible(true);
 	}
 
+	//create custom default closing op
+	private void addClosingOperation()
+	{
+		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		window.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				int opt = GUIManager.exit();
+				if(opt > 0) System.exit(0);
+			}
+		});
+	}
+
 	//initialize gui components
 	public void initComponents()
+	{
+		window.add(GUIManager.getGUIItems());
+	}
+	//initialize gui menu 
+	public void initMenu()
 	{
 		//create the menubar
 		JMenuBar menuBar = new JMenuBar();
