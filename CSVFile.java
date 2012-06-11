@@ -87,7 +87,7 @@ public class CSVFile
 	}
 
 	//writes data to a file using the given encoding
-	public void writeFileData(String data)
+	private void writeFileData(String data)
 	{
 		try
 		{
@@ -103,6 +103,13 @@ public class CSVFile
 		}
 	}
 
+	//write data from headers into the file
+	public void save()
+	{
+		String text = createRawText();
+		writeFileData(text);
+	}
+	
 	//read through the raw data of a file and parse the data
 	//into headers (held in CSVDataHeader class)
 	public void parseFile(String rawInput)
@@ -180,6 +187,63 @@ public class CSVFile
 
 	//add new header to the files header container
 	public void addHeader(CSVDataHeader header){if(header != null) headers.add(header);}
+
+	//removes the first header whos title matches the given title
+	public void removeHeader(String title)
+	{
+		if(title == null || title.equals("")) return;
+		for(int i=0;i<headers.size();i++)
+		{
+			if(title.equals(((CSVDataHeader)headers.elementAt(i)).getTitle()))
+			{
+				headers.removeElementAt(i); 
+				break;
+			}
+		}
+	}
+	
+	//set the entire list of headers to the given list
+	public void setHeaderList(Vector newHeaders){headers= newHeaders;}
+
+	//traverse through the headers  creating CSV file text
+	private String createRawText()
+	{
+		//first create the delimiters to default. 
+		String fileData= "|"+headerDelimiter+"|"+lineDelimiter+"|"+
+							dataDelimiter+"|";
+		for(int k=0;k<headers.size();k++)
+		{
+			//get the data header for the given sheet and translate the text back into 
+			//the proper format using the files delimiters
+			CSVDataHeader dataHeader = (CSVDataHeader)headers.elementAt(k);
+			//traverse through the names of the header and create header metadata text 
+			String headerText = headerDelimiter+dataHeader.getTitle()+"\n"+headerDelimiter;
+			String[] names = dataHeader.getNames();
+			for(int i=0;i<names.length;i++)
+			{
+				headerText+=names[i];
+				if(i+1 != names.length) headerText+=dataDelimiter;
+			}
+			//traverse through the data of the header and create txt
+			String dataText = "\n";
+			Vector dta = dataHeader.getData();
+			for(int i=0;i<dta.size();i++)
+			{
+				Vector col = (Vector)(dta.elementAt(i));
+				dataText+=lineDelimiter;
+				for(int j=0;j<col.size();j++)
+				{
+					String dat = (String)(col.elementAt(j));
+					dataText+=dat;
+					if(j+1 != col.size()) dataText+=dataDelimiter;
+					j++;
+				}
+				dataText+="\n";
+			}
+			fileData+=headerText+dataText;
+		}
+		return fileData;
+	}
 }
 
 //later add method for converting a 2-D Vector into a raw string for writing to a file

@@ -32,7 +32,8 @@ public class DataFile extends JPanel
 			if(path.equals("")) return;
 			file.setPath(path);
 		}
-		file.writeFileData(getDataSheetText());
+		file.setHeaderList(getHeaderList());
+		file.save();
 	}
 
 	//mask the settting of a path for the file contained
@@ -40,41 +41,13 @@ public class DataFile extends JPanel
 	public String getFilePath(){return file.getPath();}	
 
 	//get all the data from the GUI and return it in the proper format
-	private String getDataSheetText()
+	private Vector getHeaderList()
 	{
-		String fileData= "|"+file.getHeaderDelimiter()+"|"+file.getLineDelimiter()+"|"+
-							file.getDataDelimiter()+"|";
+		Vector headerList = new Vector();
 		for(DataSheet datasheet : dataSheets)
-		{
-			//get the data header for the given sheet and translate the text back into 
-			//the proper format using the files delimiters
-			CSVDataHeader dataHeader = datasheet.getDataHeader();
-			String headerText = file.getHeaderDelimiter()+dataHeader.getTitle()+"\n"+file.getHeaderDelimiter();
-			String[] names = dataHeader.getNames();
-			for(int i=0;i<names.length;i++)
-			{
-				headerText+=names[i];
-				if(i+1 != names.length) headerText+=file.getDataDelimiter();
-			}
-			String dataText = "\n";
-			Vector dta = dataHeader.getData();
-			for(int i=0;i<dta.size();i++)
-			{
-				Vector col = (Vector)(dta.elementAt(i));
-				dataText+=file.getLineDelimiter();
-				for(int j=0;j<col.size();j++)
-				{
-					String dat = (String)(col.elementAt(j));
-					dataText+=dat;
-					if(j+1 != col.size()) dataText+=file.getDataDelimiter();
-					j++;
-				}
-				dataText+="\n";
-			}
-			fileData+=headerText+dataText;
-		}
-		return fileData;
-	}
+			headerList.add(datasheet.getDataHeader());
+		return headerList;
+	} 
 
 	//get a path through dialog box
 	private String getPathDialog()
