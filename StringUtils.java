@@ -108,12 +108,12 @@ public class StringUtils
 //==============================FOR TESTING THIS CLASS==========================================|
 	public static void main(String[] args)
 	{
-		CSVFile file = new CSVFile("/home/boys/Documents/Noah/src/GIT/JavaCSVReader/test.txt");
-		
-//		file.readFile();
-		String s = file.getRawFileText();
-		String[] data = StringUtils.tagSplit(s,"#");
-		for(String i : data)
-			System.out.println(i);
+		String testString = "Data1,Data2,,,";
+		String[] values = rawSplit(testString,",");
+		for(int i=0;i<values.length;i++)
+		{
+			if(values[i].equals("")){ System.out.println("null"); continue; }
+			System.out.println(values[i]);
+		}
 	}
 }

@@ -1,4 +1,5 @@
 import java.io.InputStreamReader;
+import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
@@ -11,6 +12,7 @@ public class CSVFile
 	private OutputStreamWriter out;
 	private String encoding;
 	private String path;
+	private String name;
 
 	private String[] mainHeader;
 	private Vector headers;
@@ -51,19 +53,22 @@ public class CSVFile
 	//allow external control over the file
 	public String getPath(){return path;}
 	public void setPath(String pth){path=pth;}
+	public String getFileName(){return name;}
 	
 	//returns data from a given file
 	private String readFileData()
 	{
 		String data = new String();
 		try{
-			FileInputStream file = new FileInputStream(path);
+			File fl = new File(path);
+			FileInputStream file = new FileInputStream(fl);
+			name = fl.getName();
 			in = new InputStreamReader(file);
 			data = new String(new byte[0], encoding);
 		
 			//read data and check if it is the EOF character, if not then 
 			//add the concatenate the data to the current data string using the 
-			//given encoding type
+			//given encoding typ
 			while(true)
 			{
 				int raw = in.read();
@@ -91,7 +96,9 @@ public class CSVFile
 	{
 		try
 		{
-			FileOutputStream file = new FileOutputStream(path);
+			File fl = new File(path);
+			FileOutputStream file = new FileOutputStream(fl);
+			name = fl.getName();
 			out = new OutputStreamWriter(file,encoding);
 			out.flush(); //flush the stream just to be sure there is nothing "clogging" it
 			out.write(data,0,data.length());
@@ -136,7 +143,8 @@ public class CSVFile
 			if(key.equals(headerDelimiter))
 			{
 				//save the workingHeader before creating a new one
-				addHeader(workingHeader);
+				if(workingHeader != null)
+					addHeader(workingHeader);
 				//if the first character is a header character then create a new header
 				//based off of the info given. 
 				workingHeader = createNewHeader(temp+"\n"+lines[i+1]);
@@ -147,19 +155,31 @@ public class CSVFile
 			}
 			else if(key.equals(lineDelimiter))
 			{
-				if(workingHeader == null) continue;
-				String[] rawData = StringUtils.split(temp.substring(1),dataDelimiter);
-				String[] names = workingHeader.getNames();
-				//after getting the rawData from the file and the current header for the 
-				//dataHeader filter through the data - limiting only to the number of header 
-				//data available. 
-				for(int j=0;j<names.length;j++)
-					workingHeader.appendToColumn(rawData[j],j);
+				workingHeader = parseHeaderData(workingHeader,temp);
 			}
 		}
 		//add the last workingHeader to the list 
-		headers.add(workingHeader);
+		if(workingHeader != null)
+			headers.add(workingHeader);
 	}	
+
+	//parse the given raw string and return a header that contains the data
+	private CSVDataHeader parseHeaderData(CSVDataHeader header, String rawText)
+	{
+		if(header == null) return header;
+		String[] rawData = StringUtils.split(rawText.substring(1),dataDelimiter);
+		String[] names = header.getNames();
+		//after getting the rawData from the file and the current header for the 
+		//dataHeader filter through the data - limiting only to the number of header 
+		//data available. 
+		for(int j=0;j<names.length;j++)
+		{
+			String dta = "null";
+			if(j < rawData.length) dta = rawData[j];
+			header.appendToColumn(dta,j);
+		}
+		return header;
+	}
 
 	//parse file metadata
 	private void parseFileMetaData(String text)
@@ -181,7 +201,6 @@ public class CSVFile
 		String[] headerLines = StringUtils.split(rawText,"\n");
 		String title = headerLines[0].substring(1);
 		String[] names = StringUtils.split(headerLines[1].substring(1),dataDelimiter);
-		 
 		return new CSVDataHeader(title,names);	
 	}
 
@@ -217,26 +236,26 @@ public class CSVFile
 			//the proper format using the files delimiters
 			CSVDataHeader dataHeader = (CSVDataHeader)headers.elementAt(k);
 			//traverse through the names of the header and create header metadata text 
-			String headerText = headerDelimiter+dataHeader.getTitle()+"\n"+headerDelimiter;
+			String headerText = "\n"+headerDelimiter+dataHeader.getTitle()+"\n"+headerDelimiter;
 			String[] names = dataHeader.getNames();
 			for(int i=0;i<names.length;i++)
 			{
 				headerText+=names[i];
-				if(i+1 != names.length) headerText+=dataDelimiter;
+				if(i+1 < names.length) headerText+=dataDelimiter;
 			}
 			//traverse through the data of the header and create txt
 			String dataText = "\n";
 			Vector dta = dataHeader.getData();
-			for(int i=0;i<dta.size();i++)
+			int colWidth = dta.size();
+			int rowHeight = ((Vector)(dta.elementAt(0))).size();
+			for(int i=0;i<rowHeight;i++)
 			{
-				Vector col = (Vector)(dta.elementAt(i));
 				dataText+=lineDelimiter;
-				for(int j=0;j<col.size();j++)
+				for(int j=0;j<colWidth;j++)
 				{
-					String dat = (String)(col.elementAt(j));
+					String dat = (String)((Vector)dta.elementAt(j)).elementAt(i);
 					dataText+=dat;
-					if(j+1 != col.size()) dataText+=dataDelimiter;
-					j++;
+					if(j+1 < colWidth) dataText+=dataDelimiter;
 				}
 				dataText+="\n";
 			}

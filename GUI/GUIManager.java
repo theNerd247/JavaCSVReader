@@ -13,13 +13,15 @@ public class GUIManager
 	public static void open()
 	{
 		DataFile file = new DataFile("");
-		
-		addDataFile(new DataFile(file.openFile()));
+		String path = file.openFile();
+		if(path.equals("")) return;
+		addDataFile(new DataFile(path));
 	}
 
 	public static void close()
 	{
 		DataFile file = getCurrentFile();
+		if(file == null) return;
 		if(file.getFilePath().equals(""))
 		{
 			int option = JOptionPane.showConfirmDialog(null,
@@ -51,6 +53,12 @@ public class GUIManager
 		}
 		return 1;
 	}
+	
+	public static void exit(boolean manual)
+	{
+		int opt = exit();
+		if(manual && opt >0) System.exit(0);
+	} 
 
 	//creates an empty data file
 	public static void newFile()

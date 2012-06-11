@@ -53,56 +53,49 @@ public class GUIMain
 				JMenuItem open = new JMenuItem("open");
 					open.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("Opening new File");
-							GUIManager.open();//later add method call to open a new file
+							GUIManager.open();
 						}
 					});
 				fileMenu.add(open);
 				JMenuItem close = new JMenuItem("close");
 					close.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("closing file");
-							GUIManager.close();//later add method call to open a new file
+							GUIManager.close();
 						}
 					});
 				fileMenu.add(close);
 				JMenuItem newFile = new JMenuItem("new");
 					newFile.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("creating new file");
-							GUIManager.newFile();//later add method call to open a new file
+							GUIManager.newFile();
 						}
 					});
 				fileMenu.add(newFile);
 				JMenuItem save = new JMenuItem("save");
 					save.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("saving file");
-							GUIManager.save();//later add method call to open a new file
+							GUIManager.save();
 						}
 					});
 				fileMenu.add(save);
 				JMenuItem saveCopy = new JMenuItem("save a copy");
 					saveCopy.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("saving file copy");
-							GUIManager.save();//later add method call to open a new file
+							GUIManager.saveCopy();
 						}
 					});
 				fileMenu.add(saveCopy);
 				JMenuItem saveAs = new JMenuItem("saveAs");
 					saveAs.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("saving as file");
-							GUIManager.saveAs();//later add method call to open a new file
+							GUIManager.saveAs();
 						}
 					});
 				fileMenu.add(saveAs);
 				JMenuItem exit = new JMenuItem("exit");
 					exit.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("exiting program");
-							GUIManager.exit();//later add method call to open a new file
+							GUIManager.exit(true);
 						}
 					});
 				fileMenu.add(exit);
@@ -112,7 +105,6 @@ public class GUIMain
 				JMenuItem newRobotSheet = new JMenuItem("New Roobt Sheet");
 					newRobotSheet.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("create new robot sheet");
 							GUIManager.newRobotSheet();
 						} 
 					});
@@ -122,16 +114,14 @@ public class GUIMain
 				JMenuItem about = new JMenuItem("about");
 					about.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("display about menu");
-							GUIManager.showAbout();//later add method call to open a new file
+							GUIManager.showAbout();
 						}
 					});
 				helpMenu.add(about);
 				JMenuItem manual = new JMenuItem("manual");
 					manual.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							System.out.println("opening help menu");
-							GUIManager.showHelp();//later add method call to open a new file
+							GUIManager.showHelp();
 						}
 					});
 				helpMenu.add(manual);

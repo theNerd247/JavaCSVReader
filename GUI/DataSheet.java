@@ -28,17 +28,18 @@ public class DataSheet extends JPanel
 		for(String name : header.getNames())
 			names.add(new JTextField(name));
 
+		Vector dta = header.getData();
 		//create data cells for each data given
-		for(int i=0;i<header.getData().size();i++)
+		for(int i=0;i<dta.size();i++)
 		{
-			Vector col = (Vector)(header.getData().elementAt(i));
+			Vector col = (Vector)(dta.elementAt(i));
 			Vector<DataCell> temp = new Vector<DataCell>();
 			for(int j=0;j<col.size();j++)
 			{
 				String data = (String)(col.elementAt(j));
 				temp.add(new DataCell(data));
-				dataCells.add(temp);
 			}
+			dataCells.add(temp);
 		}
 	}
 
@@ -52,14 +53,12 @@ public class DataSheet extends JPanel
 		CSVDataHeader newHeader = new CSVDataHeader(title.getText(),nams);
 		//itterate through the data cells and collect data
 		//creating a new header as we itterate
+		int i=0;
 		for(Vector<DataCell> col : dataCells)
 		{	
-			int i=0;
 			for(DataCell cell : col)
-			{
 				newHeader.appendToColumn(cell.getText(),i);
-				i++;
-			}
+			i++;
 		}
 		header = newHeader;
 		return header;
