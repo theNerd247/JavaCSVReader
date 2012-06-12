@@ -160,7 +160,7 @@ public class CSVFile
 		}
 		//add the last workingHeader to the list 
 		if(workingHeader != null)
-			headers.add(workingHeader);
+			headers.addElement(workingHeader);
 	}	
 
 	//parse the given raw string and return a header that contains the data
@@ -205,7 +205,7 @@ public class CSVFile
 	}
 
 	//add new header to the files header container
-	public void addHeader(CSVDataHeader header){if(header != null) headers.add(header);}
+	public void addHeader(CSVDataHeader header){if(header != null) headers.addElement(header);}
 
 	//removes the first header whos title matches the given title
 	public void removeHeader(String title)

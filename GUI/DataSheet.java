@@ -26,7 +26,7 @@ public class DataSheet extends JPanel
 
 		//create gui label for header names
 		for(String name : header.getNames())
-			names.add(new JTextField(name));
+			names.addElement(new JTextField(name));
 
 		Vector dta = header.getData();
 		//create data cells for each data given
@@ -37,9 +37,9 @@ public class DataSheet extends JPanel
 			for(int j=0;j<col.size();j++)
 			{
 				String data = (String)(col.elementAt(j));
-				temp.add(new DataCell(data));
+				temp.addElement(new DataCell(data));
 			}
-			dataCells.add(temp);
+			dataCells.addElement(temp);
 		}
 	}
 

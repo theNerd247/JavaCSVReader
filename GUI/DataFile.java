@@ -20,7 +20,7 @@ public class DataFile extends JPanel
 		for(int i=0;i<file.getHeaders().size();i++)
 		{
 			CSVDataHeader header = (CSVDataHeader)(file.getHeaders().elementAt(i));
-			dataSheets.add(new DataSheet(header));
+			dataSheets.addElement(new DataSheet(header));
 		}
 	}
 
@@ -40,8 +40,10 @@ public class DataFile extends JPanel
 			if(path.equals("")) return;
 			file.setPath(path);
 		}
+		
 		file.setHeaderList(getHeaderList());
 		file.save();
+		setName(file.getFileName());
 	}
 
 	//mask the settting of a path for the file contained
@@ -53,7 +55,7 @@ public class DataFile extends JPanel
 	{
 		Vector headerList = new Vector();
 		for(DataSheet datasheet : dataSheets)
-			headerList.add(datasheet.getDataHeader());
+			headerList.addElement(datasheet.getDataHeader());
 		return headerList;
 	} 
 

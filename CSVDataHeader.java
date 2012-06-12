@@ -21,39 +21,22 @@ public class CSVDataHeader
 		//create empty vectors to contain the data
 		for(int i=0;i<names.length;i++)
 		{
-			data.add(i,new Vector());
+			data.addElement(new Vector());
 		}	
 	}
 
 	//add data to the end of a specified column
 	public void appendToColumn(String new_data,int col)
 	{
-		((Vector)data.elementAt(col)).add(new_data);
+		((Vector)data.elementAt(col)).addElement(new_data);
 	}
-	
-/*             COMMENTED OUT DUE TO NO USE
-	//append data to the specified 2-d index
-	public void addData(String new_data, int row, int col)
-	{
-		((Vector)data.elementAt(col)).insertElementAt(new_data,row);
-	}
-	//add another header column
-	public void newDataColumn(String name)
-	{
-		//manually grow the names
-		String[] temp = new String[names.length+1];
-		for(int i=0;i<names.length;i++)
-			temp[i] = names[i];
-		temp[temp.length-1] = name;
-		data.add(new Vector());
-	}
-*/
+
 	public Vector getData(){return data;}
 	public String getTitle(){return title;}
 	public String[] getNames(){return this.names;}
 
 	//for testing this class
-	public static void main(String[] args)
+/*	public static void main(String[] args)
 	{
 		String[] nams = {"Bob","Joe","Larry"};
 		CSVDataHeader header = new CSVDataHeader("TEST",nams);
@@ -71,5 +54,6 @@ public class CSVDataHeader
 		String d1 = (String)(((Vector)data.elementAt(0)).elementAt(0));
 		System.out.println(d1);
 	}
+*/
 }
 

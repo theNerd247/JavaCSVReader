@@ -25,7 +25,7 @@ public class StringUtils
 			
 			if(begin == -1 || end == -1) break; 			
 
-			buffer.add(input.substring(begin+1,end));
+			buffer.addElement(input.substring(begin+1,end));
 			input = input.substring(end+1);
 		}
 		int size = buffer.size();
@@ -71,13 +71,13 @@ public class StringUtils
 			if(cutIndex == -1)
 			{
 				if(withEnd)
-					dataBuffer.add(input);
+					dataBuffer.addElement(input);
 				break;
 			}
 			String sub1 = input.substring(0,cutIndex);
 			String sub2 = input.substring(cutIndex+1);
 
-			dataBuffer.add(sub1);
+			dataBuffer.addElement(sub1);
 			input = sub2;
 		}	
 		//convert the buffer to an array and return it
