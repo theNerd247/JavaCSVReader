@@ -72,6 +72,9 @@ public class GUIManager
 	{
 		DataFile file = getCurrentFile();
 		if(file != null) file.saveFile();
+		int index = tabs.indexOfComponent(file);
+		System.out.println(index);
+		tabs.setTitleAt(index,file.getName());
 	}
 
 	//save a copy of the file but don't set the copy to edit. 
@@ -83,6 +86,8 @@ public class GUIManager
 		file.setFilePath("");
 		file.saveFile();
 		file.setFilePath(tempPath);
+		int index = tabs.indexOfComponent(file);
+		tabs.setTitleAt(index,file.getName());
 	}
 
 	//save a copy of the file and file and set the newly saved file to be edited
@@ -94,6 +99,8 @@ public class GUIManager
 		if(file == null) return;
 		file.setFilePath("");
 		file.saveFile();
+		int index = tabs.indexOfComponent(file);
+		tabs.setTitleAt(index,file.getName());
 	}
 
 	public static void newRobotSheet()

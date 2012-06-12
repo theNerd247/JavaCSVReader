@@ -44,6 +44,7 @@ public class DataFile extends JPanel
 		file.setHeaderList(getHeaderList());
 		file.save();
 		setName(file.getFileName());
+		System.out.println(getName());
 	}
 
 	//mask the settting of a path for the file contained
