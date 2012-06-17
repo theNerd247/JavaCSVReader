@@ -33,27 +33,6 @@ public class CSVDataHeader
 
 	public Vector getData(){return data;}
 	public String getTitle(){return title;}
-	public String[] getNames(){return this.names;}
-
-	//for testing this class
-/*	public static void main(String[] args)
-	{
-		String[] nams = {"Bob","Joe","Larry"};
-		CSVDataHeader header = new CSVDataHeader("TEST",nams);
-		header.appendToColumn("Tomatoe",0);
-		header.appendToColumn("WEIRD",1);
-		header.appendToColumn("Cucumber",2);
-	
-		Vector data = header.getData();
-	
-		System.out.println(header.getTitle());
-		String[] names = header.getNames();
-		for(String i : names)
-			System.out.print(i+",");
-		System.out.print("\n");
-		String d1 = (String)(((Vector)data.elementAt(0)).elementAt(0));
-		System.out.println(d1);
-	}
-*/
+	public String[] getNames(){return names;}
 }
 

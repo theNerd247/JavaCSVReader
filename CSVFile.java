@@ -8,15 +8,18 @@ import java.util.Vector;
 
 public class CSVFile
 {
+	//IO vars 
 	private InputStreamReader in;
 	private OutputStreamWriter out;
 	private String encoding;
 	private String path;
 	private String name;
 
-	private String[] mainHeader;
+	//CSVFile vars
 	private Vector headers;
-	private String fileText;
+	private String rawFileText;
+	//defalut delimiters for a file
+	//when writing a new file these are the delimiters used
 	private String headerDelimiter="#";
 	private String lineDelimiter=";";
 	private String dataDelimiter=","; 
@@ -29,15 +32,13 @@ public class CSVFile
 		this.path = path;
 		this.encoding = encoding;
 		headers = new Vector();
-		//go ahead and read the file and set the data structures
-		if(path.equals("") || path == null) return;
-		readFileData();
-		if(fileText == new String() || fileText == null) return;//if the file is empty then do nothing 
-		parseFile(fileText);
+		//go ahead and read the file and create the data headers as 
+		//needed
+		rawFileText = readFileData();
+		parseFile(rawFileText);
 	}
 
-	//set the line and data delimiters to tell the parser
-	//how to go through the CSV file
+	//setters and getters for line delimiters
 	public void setLineDelimiter(String d){lineDelimiter = d;}
 	public void setDataDelimiter(String d){dataDelimiter = d;}
 	public void setHeaderDelimiter(String d){headerDelimiter = d;}
@@ -45,19 +46,20 @@ public class CSVFile
 	public String getHeaderDelimiter(){return headerDelimiter;}
 	public String getDataDelimiter(){return dataDelimiter;}
 	
-	//return data
-	public String getRawFileText(){return fileText;}
+	//setters and getters for the list of headers
 	public Vector getHeaders(){return headers;}
 	public void setHeaders(Vector newHeaders){headers=newHeaders;}
 	
-	//allow external control over the file
+	//setters and getters for file path and file name
 	public String getPath(){return path;}
 	public void setPath(String pth){path=pth;}
 	public String getFileName(){return name;}
+	public void setFileName(String newName){ name = newName;}
 	
 	//returns data from a given file
 	private String readFileData()
 	{
+		if(path.equals("") || path == null) return;
 		String data = new String();
 		try{
 			File fl = new File(path);
@@ -65,7 +67,6 @@ public class CSVFile
 			name = fl.getName();
 			in = new InputStreamReader(file);
 			data = new String(new byte[0], encoding);
-		
 			//read data and check if it is the EOF character, if not then 
 			//add the concatenate the data to the current data string using the 
 			//given encoding typ
@@ -73,7 +74,7 @@ public class CSVFile
 			{
 				int raw = in.read();
 				if(raw == -1) break;
-				//read the value and convert to a a string by storing the value in a 1d,1cell byte array
+				//read the value and convert to a a string by wrapping it in a byte array
 				//then use that to create a new string and append to the current data. 
 				byte value = (new Integer(raw)).byteValue();
 				byte[] temp = {value};
@@ -85,9 +86,9 @@ public class CSVFile
 		}
 		catch(Exception e)
 		{
+			//possibly create a logging class to cache error messages
 			System.out.println(e.getMessage()); return new String();
 		}
-		fileText = data;
 		return data;
 	}
 
@@ -113,14 +114,15 @@ public class CSVFile
 	//write data from headers into the file
 	public void save()
 	{
-		String text = createRawText();
-		writeFileData(text);
+		writeFileData(createRawText());
 	}
 	
 	//read through the raw data of a file and parse the data
 	//into headers (held in CSVDataHeader class)
 	public void parseFile(String rawInput)
 	{
+		if(rawFileText.equals("") || rawFileText == null) return;		
+
 		//first split the raw input using new lines
 		String[] lines = StringUtils.split(rawInput,"\n");
 		int length = lines.length;
@@ -189,7 +191,6 @@ public class CSVFile
 		headerDelimiter=dels[0];
 		lineDelimiter=dels[1];
 		dataDelimiter=dels[2];
-		//System.out.println(headerDelimiter+" "+lineDelimiter+" "+dataDelimiter);
 	}
 	
 	//create new header from given text (should be two lines 
@@ -225,6 +226,7 @@ public class CSVFile
 	public void setHeaderList(Vector newHeaders){headers= newHeaders;}
 
 	//traverse through the headers  creating CSV file text
+	//clean this method up
 	private String createRawText()
 	{
 		//first create the delimiters to default. 
@@ -264,5 +266,3 @@ public class CSVFile
 		return fileData;
 	}
 }
-
-//later add method for converting a 2-D Vector into a raw string for writing to a file

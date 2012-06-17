@@ -106,6 +106,7 @@ public class StringUtils
 		return s;
 	}
 //==============================FOR TESTING THIS CLASS==========================================|
+/*
 	public static void main(String[] args)
 	{
 		String testString = "Data1,Data2,,,";
@@ -116,4 +117,5 @@ public class StringUtils
 			System.out.println(values[i]);
 		}
 	}
+*/
 }
