@@ -9,8 +9,6 @@ import java.util.Vector;
 public class CSVFile
 {
 	//IO vars 
-	private InputStreamReader in;
-	private OutputStreamWriter out;
 	private String encoding;
 	private String path;
 	private String name;
@@ -59,13 +57,13 @@ public class CSVFile
 	//returns data from a given file
 	private String readFileData()
 	{
-		if(path.equals("") || path == null) return;
+		if(path.equals("") || path == null) return null;
 		String data = new String();
 		try{
 			File fl = new File(path);
 			FileInputStream file = new FileInputStream(fl);
 			name = fl.getName();
-			in = new InputStreamReader(file);
+			InputStreamReader in = new InputStreamReader(file);
 			data = new String(new byte[0], encoding);
 			//read data and check if it is the EOF character, if not then 
 			//add the concatenate the data to the current data string using the 
@@ -98,11 +96,12 @@ public class CSVFile
 		try
 		{
 			File fl = new File(path);
-			FileOutputStream file = new FileOutputStream(fl);
+			//open the file to write (overwrite any data in the file)
+			FileOutputStream fileStream = new FileOutputStream(fl,false);
 			name = fl.getName();
-			out = new OutputStreamWriter(file,encoding);
-			out.flush(); //flush the stream just to be sure there is nothing "clogging" it
+			OutputStreamWriter out = new OutputStreamWriter(fileStream,encoding);
 			out.write(data,0,data.length());
+			out.flush();
 			out.close();
 		}
 		catch(Exception e)
@@ -201,7 +200,7 @@ public class CSVFile
 		//and the data names from the second
 		String[] headerLines = StringUtils.split(rawText,"\n");
 		String title = headerLines[0].substring(1);
-		String[] names = StringUtils.split(headerLines[1].substring(1),dataDelimiter);
+		String[] names = StringUtils.split(headerLines[1],dataDelimiter,1);
 		return new CSVDataHeader(title,names);	
 	}
 
@@ -220,6 +219,20 @@ public class CSVFile
 				break;
 			}
 		}
+	}
+
+	//return a header by its title
+	//if the header can not be found then return null
+	public CSVDataHeader getHeader(String title)
+	{
+		for(int i=0;i<headers.size();i++)
+		{
+			CSVDataHeader header = (CSVDataHeader)headers.elementAt(i);
+			if(header.getTitle().equals(title))
+				return header;
+		}
+		
+		return null;
 	}
 	
 	//set the entire list of headers to the given list
@@ -243,6 +256,7 @@ public class CSVFile
 			for(int i=0;i<names.length;i++)
 			{
 				headerText+=names[i];
+				//make sure we don't add commas after the last bit of data
 				if(i+1 < names.length) headerText+=dataDelimiter;
 			}
 			//traverse through the data of the header and create txt

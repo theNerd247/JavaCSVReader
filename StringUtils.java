@@ -9,11 +9,18 @@ public class StringUtils
 	//split, save extra data defined past last delimiter, start at begining of string
 	public static String[] split(String input, String delimiter){return split(input,delimiter,true,0);}
 	//as above but start at different index
-	public static String[] split(String input, String delimiter, int start){return split(input,delimiter,true,start);}
+	public static String[] split(String input, String delimiter, int start)
+	{
+		return split(input.substring(start),delimiter);
+	}
 	//split but DON'T return data past the last delimiter
-	public static String[] rawSplit(String input, String delimiter){return split(input,delimiter,false,0);}
+	public static String[] rawSplit(String input, String delimiter)
+	{
+		return split(input,delimiter,false,0);
+	}
 
-	//split data found only in between a given delimiter - similiar to parsing html
+	//split data found only in between a given delimiter 
+	//similiar to parsing html
 	public static String[] tagSplit(String input, String delimiter)
 	{
 		Vector buffer = new Vector();
