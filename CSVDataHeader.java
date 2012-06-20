@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2012, Noah Harvey
+ *
+ * This project is licensed under the BSD 2-Clause license.
+ * See LICENSE.txt for a copy.
+ */
+
 import java.util.Vector;
 
 //class implementing data container for CSV data header
