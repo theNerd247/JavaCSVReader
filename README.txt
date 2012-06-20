@@ -1,6 +1,7 @@
 |=================================================================================|
 | JAVA CSV READER Library                                                         |
 | FOR: Java based FRC robots.                                                     |
+| LICENSE: BSD 2-Clause.                                                          |
 | REQUIRED APIs: Standard FRC Java Lib (as of 2012) - not Standard API library.   |
 |=================================================================================|
 
