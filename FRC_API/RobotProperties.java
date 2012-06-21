@@ -1,4 +1,6 @@
+package JavaCSVReader.FRC_API;
 
+import JavaCSVReader.*;
 /*
  * Similiar to the RobotProperties class
  * this class acts as a container for RobotProperties
@@ -11,7 +13,8 @@ public class RobotProperties
 	
 	public static RobotProperties getInstance()
 	{
-		return (instance != null) ? instance : instance = new RobotProperties(); 
+		if(instance == null) instance = new RobotProperties();
+		return instance;
 	}
 
 	protected RobotProperties()

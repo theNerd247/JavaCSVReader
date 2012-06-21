@@ -1,4 +1,6 @@
+package JavaCSVReader.FRC_API;
 
+import JavaCSVReader.CSVFile;
 /*
  * This class acts as a container for robot
  * devices. 
@@ -11,7 +13,8 @@ public class RobotDevices
 	
 	public static RobotDevices getInstance()
 	{
-		return (instance != null) ? instance : instance = new RobotDevices(); 
+		if(instance == null) instance = new RobotDevices();
+		return instance;
 	}
 
 	protected RobotDevices()

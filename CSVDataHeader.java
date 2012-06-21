@@ -1,3 +1,5 @@
+package JavaCSVReader;
+
 import java.util.Vector;
 
 //class implementing data container for CSV data header
