@@ -1,4 +1,3 @@
-package JavaCSVReader;
 /*
  * Copyright (c) 2012, Noah Harvey
  *
@@ -6,29 +5,63 @@ package JavaCSVReader;
  * See LICENSE.txt for a copy.
  */
 
+package JavaCSVReader;
+
 import java.util.Vector;
 
-//class to extend the utilities of the String class.
-//NOTE: this class may contain methods that have nothing to do with the JavaCSVReader lib. 
-//    : extra methods are kept for robotics team's usage in their FRC code.
+/**
+ *class to extend the utilities of the String class.
+ * <p>NOTE: this class may contain methods that have nothing to do with the JavaCSVReader lib. 
+ *    : extra methods are kept for robotics team's usage in their FRC code.
+ *@author Noah Harvey
+ *@version 1.0
+ */
 public class StringUtils
 {
-	//overloads of split
-	//split, save extra data defined past last delimiter, start at begining of string
+	/**
+	 *overload of {@link StringUtils#split(String,String,boolean,int)}
+	 *
+	 * @param input the string to split
+	 * @param delimiter the delimiter to use to split the string
+	 * @return split, and return extra data defined past last delimiter, start at begining of string
+	 * @see StringUtils#split(String,String,boolean,int)
+	 */
 	public static String[] split(String input, String delimiter){return split(input,delimiter,true,0);}
-	//as above but start at different index
+	
+	/**
+	 * overload of {@link StringUtils#split(String,String,boolean,int)}
+	 * 
+	 * @param input the string to split
+	 * @param delimiter the delimiter to use to split the string
+	 * @param start the index to start splitting the string at
+	 * @return split, and return extra data defined past last delimiter, start at begining of string
+	 * @see StringUtils#split(String,String,boolean,int)
+	 */
 	public static String[] split(String input, String delimiter, int start)
 	{
 		return split(input.substring(start),delimiter);
 	}
-	//split but DON'T return data past the last delimiter
+
+	/**
+	 * overload of {@link StringUtils#split(String,String,boolean,int)}
+	 * 
+	 * @param input the string to split
+	 * @param delimiter the delimiter to use to split the string
+	 * @return split, but DO NOT return extra data defined past last delimiter, start at begining of string
+	 * @see StringUtils#split(String,String,boolean,int)
+	 */
 	public static String[] rawSplit(String input, String delimiter)
 	{
 		return split(input,delimiter,false,0);
 	}
 
-	//split data found only in between a given delimiter 
-	//similiar to parsing html
+	/**
+	 * Split the data found only in between the given delimiter 
+	 *
+	 * @param input the string to split
+	 * @param delimiter the delimiter to use to split the string
+	 * @return array of data found in between delimiters 
+	 */
 	public static String[] tagSplit(String input, String delimiter)
 	{
 		Vector buffer = new Vector();
@@ -51,16 +84,31 @@ public class StringUtils
 		}
 		return d;
 	}
-
-	//same as tagsplit, but return the data that is not encased in the given delimiter
+	
+	/**
+ 	 * Same as tagsplit but return the data that is OUTSIDE of the given delimiters
+ 	 *
+ 	 * @param input the text to split
+ 	 * @param delimiter the delimiter to use
+ 	 * @return array of data found outside of the delimiters
+ 	 * @see StringUtils#tagSplit(String,String)
+ 	 */ 
 	public static String[] invertTagSplit(String input, String delimiter)
 	{
 		int start = input.indexOf(delimiter);
 		return tagSplit(input.substring(start+1),delimiter);
 	}
-	
-	//used to scan through the given text and return all data before or inbetween the given delimiter
-	//the last item in the array returned is the rest of the String AFTER the last delimiter if withEnd is true
+
+	/**
+ 	 * Split the given string around the delimiter given.  
+	 * 
+	 * @param str the string to split
+	 * @param delimiter the delimiter to use to split the string
+	 * @param withEnd return data that is found past the last delimiter?
+	 * @param initIndex the starting index to begin splitting around
+	 * @return array of data found around the delimiters 
+	 * @see StringUtils#split(String,String,boolean,int)
+	 */	
 	public static String[] split(String str, String delimiter,boolean withEnd,int initIndex)
 	{
 		String input = str;
@@ -106,7 +154,12 @@ public class StringUtils
 		return d;
 	}
 
-	//take the given string and return it as a string with no carriage returns
+	/**
+ 	 * Convert a multi line string to a single line string
+ 	 *
+ 	 * @param input string to convert
+ 	 * @return single line string
+ 	 */
 	public static String noNewLine(String input)
 	{
 		String[] choppedString = split(input,"\n");

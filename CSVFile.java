@@ -1,10 +1,11 @@
-package JavaCSVReader;
 /*
  * Copyright (c) 2012, Noah Harvey
  *
  * This project is licensed under the BSD 2-Clause license.
  * See LICENSE.txt for a copy.
  */
+
+package JavaCSVReader;
 
 import java.io.InputStreamReader;
 import java.io.File;
@@ -14,25 +15,56 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 import java.util.Vector;
 
+/**
+ * This class implements a container for holding,reading, and writing 
+ * CSV data
+ *
+ * @author Noah Harvey
+ * @version 1.0
+ */
 public class CSVFile
 {
-	//IO vars 
+	/** the encoding type of the file 
+ 	 *  @see java.io.OutputStreamWriter
+ 	 */
 	private String encoding;
+
+	/** the path of the file to read/write data*/
 	private String path;
+
+	/** the name of the file (including any file extension) */
 	private String name;
 
-	//CSVFile vars
+	/** the data headers contained in the file. 
+     * <p> <br>This can be thought of as the spread sheets that are found in a file. 
+     * <br>Each vector contains an Object of type CSVDataHeader.
+     * @see CSVDataHeader
+     */
 	private Vector headers;
+
+	/** the raw text that is found in the file when reading/writing*/
 	private String rawFileText;
+
 	//defalut delimiters for a file
 	//when writing a new file these are the delimiters used
 	private String headerDelimiter="#";
 	private String lineDelimiter=";";
 	private String dataDelimiter=","; 
 
+	/**
+     * Constructs a new file that is ascii encoded
+     *
+     * @param path the path of the file to create
+     * @see CSVFile#CSVFile(String path,String encoding)
+     */ 
 	public CSVFile(String path){this(path,"ASCII");}
 
-	//create a new file
+	/**
+ 	 * Constructs a new CSVFile
+ 	 *
+ 	 * @param path the path of the file to create 
+ 	 * @param encoding the encoding of the text in the file
+ 	 */ 
 	public CSVFile(String path, String encoding)
 	{
 		this.path = path;
@@ -44,25 +76,66 @@ public class CSVFile
 		parseFile(rawFileText);
 	}
 
-	//setters and getters for line delimiters
+	/** 
+ 	 * Sets the delimiter to use when parsing for a row of data 
+ 	 * 
+ 	 * @param d the new delimiter to use
+ 	 */ 
 	public void setLineDelimiter(String d){lineDelimiter = d;}
+
+	/** 
+ 	 * Sets the delimiter to use when parsing a row for data 
+ 	 * 
+ 	 * @param d the new delimiter to use
+ 	 */
 	public void setDataDelimiter(String d){dataDelimiter = d;}
+
+	/** 
+ 	 * Sets the delimiter to use when parsing a header of data 
+ 	 * 
+ 	 * @param d the new delimiter to use
+ 	 */
 	public void setHeaderDelimiter(String d){headerDelimiter = d;}
+
+	/** @return the line delimiter of this file*/
 	public String getLineDelimiter(){return lineDelimiter;}
+
+	/** @return the header delimiter of this file */
 	public String getHeaderDelimiter(){return headerDelimiter;}
+
+	/** @return the data delimiter of this file */
 	public String getDataDelimiter(){return dataDelimiter;}
 	
-	//setters and getters for the list of headers
+	/** @return the list of headers this file contains */
 	public Vector getHeaders(){return headers;}
+
+	/**
+ 	 * Sets the entire list of headers to the given list
+ 	 * <br><b>CAUTION:</b>This removes any previously contained data 
+ 	 * that the data headers of this file contain
+ 	 *
+ 	 * @param newHeaders the new set of headers to use
+ 	 */
 	public void setHeaders(Vector newHeaders){headers=newHeaders;}
 	
-	//setters and getters for file path and file name
+	/**@return the path of this file */
 	public String getPath(){return path;}
+
+	/**@param pth the new path to use for this file*/
 	public void setPath(String pth){path=pth;}
+
+	/**@return the name of this file*/
 	public String getFileName(){return name;}
+
+	/**@param newName the new name of this file */
 	public void setFileName(String newName){ name = newName;}
 	
-	//returns data from a given file
+	/**
+ 	 * Reads the text contained in a file based on the file's encoding. 
+ 	 *
+ 	 * @return the raw text contained in the file
+ 	 * @see CSVFile#path for details on where to read the data from
+ 	 */ 
 	private String readFileData()
 	{
 		if(path.equals("") || path == null) return null;
@@ -98,7 +171,11 @@ public class CSVFile
 		return data;
 	}
 
-	//writes data to a file using the given encoding
+	/**
+ 	 * Writes data to the file.
+ 	 *
+ 	 * @param data the String of data to write to the file
+ 	 */ 
 	private void writeFileData(String data)
 	{
 		try
@@ -118,14 +195,28 @@ public class CSVFile
 		}
 	}
 
-	//write data from headers into the file
+	/**
+ 	 * Saves raw text to the file based on the data contained in the headers list.
+ 	 *
+ 	 * @see CSVFile#createRawText() 
+ 	 * @see CSVFile#writeFileData(String)
+ 	 */ 
 	public void save()
 	{
 		writeFileData(createRawText());
 	}
 	
-	//read through the raw data of a file and parse the data
-	//into headers (held in CSVDataHeader class)
+	/**
+ 	 * Parse through the given text saving the given data into CSVDataHeaders
+	 *<p>
+	 * <br>This is done by reading through each line in the text (denoted by the value "\n")
+	 * and parsing the data according to the first character in the line. If the character
+	 * is one of the three delimiters then parse it accordingly. If it not skip it and 
+	 * move on. 
+	 *
+	 * @param rawInput the raw text to parse - generally the value returned by readFileData().
+	 * @see CSVFile#readFileData()
+	 */
 	public void parseFile(String rawInput)
 	{
 		if(rawFileText.equals("") || rawFileText == null) return;		
@@ -172,7 +263,16 @@ public class CSVFile
 			headers.addElement(workingHeader);
 	}	
 
-	//parse the given raw string and return a header that contains the data
+	/** 
+ 	 * Parse the given text and append it to the appropriate columns
+ 	 * in the given CSVDataHeader.
+ 	 *
+ 	 * @param header the header to append the data to
+ 	 * @param rawText the raw text to parse
+ 	 *
+ 	 * @return the given header with the data appended to it
+ 	 * @see CSVDataHeader#appendToColumn(String,int) 
+ 	 */ 
 	private CSVDataHeader parseHeaderData(CSVDataHeader header, String rawText)
 	{
 		if(header == null) return header;
@@ -190,7 +290,14 @@ public class CSVFile
 		return header;
 	}
 
-	//parse file metadata
+	/**
+  	 * Parse the given text to determine the delimiters for parsing the file
+  	 * <p>
+  	 *<br>view the README.txt for more details on file and text formatting
+	 *
+  	 * @param text the raw text to use to parse for the delimiters.
+  	 * <br><pre>This is normally the FIRST line in a file
+  	 */ 
 	private void parseFileMetaData(String text)
 	{
 		String del = text.substring(0,1);
@@ -200,8 +307,14 @@ public class CSVFile
 		dataDelimiter=dels[2];
 	}
 	
-	//create new header from given text (should be two lines 
-	//each beginning with the headerDelimiter
+	/**
+	 * Create new header from given text (should be two lines) each beginning with the headerDelimiter.
+	 * <p>
+	 * <br>view the README.txt for more details on file and text formatting
+	 *
+	 * @param rawText the rawText to parse for creating the new CSVDataHeader
+	 * @return the new CSVDataHeader created based on the given text
+	 */
 	private CSVDataHeader createNewHeader(String rawText)
 	{
 		//split the lines, then get the title from the first
@@ -212,10 +325,10 @@ public class CSVFile
 		return new CSVDataHeader(title,names);	
 	}
 
-	//add new header to the files header container
+	/**@param header the new header to add to the list of headers this file contains */
 	public void addHeader(CSVDataHeader header){if(header != null) headers.addElement(header);}
 
-	//removes the first header whos title matches the given title
+	/**@param title the title of the header to remove from the list of headers this file contains */
 	public void removeHeader(String title)
 	{
 		if(title == null || title.equals("")) return;
@@ -229,8 +342,10 @@ public class CSVFile
 		}
 	}
 
-	//return a header by its title
-	//if the header can not be found then return null
+	/**
+ 	 *@param title the title of the header to get 
+ 	 *@return the CSVDataHeader that matches the given title 
+ 	 */
 	public CSVDataHeader getHeader(String title)
 	{
 		for(int i=0;i<headers.size();i++)
@@ -243,11 +358,13 @@ public class CSVFile
 		return null;
 	}
 	
-	//set the entire list of headers to the given list
-	public void setHeaderList(Vector newHeaders){headers= newHeaders;}
-
-	//traverse through the headers  creating CSV file text
-	//clean this method up
+	/**
+	 * Traverse through the list of headers and create the raw text for a file
+	 * based on the data contained in the headers. 
+	 *
+	 * @return the raw text created
+	 * @see CSVFile#save()
+	 */
 	private String createRawText()
 	{
 		//first create the delimiters to default. 
