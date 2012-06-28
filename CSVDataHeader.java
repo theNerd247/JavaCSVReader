@@ -11,11 +11,10 @@ import java.util.Vector;
 
 /**
  * This class implements a "spreadsheet" which contains data in
- * columns and rows. Once data is added to a header it can 
- * not be removed
- *
+ * columns and rows. 
  * @author Noah Harvey
  * @version 0.1
+ * @see Vector2D
  */
 public class CSVDataHeader extends Vector2D
 {
@@ -45,7 +44,7 @@ public class CSVDataHeader extends Vector2D
      * Returns the 2D vector containing the data of the CSVDataHeader
      *
      * @return Vector the 2D vector containing the data
-     * @see CSVDataHeader#data 
+     * @see Vector2D#getItems()
      */ 
 	public Vector getData(){return getItems();}
 

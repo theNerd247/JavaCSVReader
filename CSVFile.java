@@ -116,7 +116,7 @@ public class CSVFile
  	 *
  	 * @param newHeaders the new set of headers to use
  	 */
-	public void setHeaders(Vector newHeaders){headers=newHeaders;}
+	public void setHeaderList(Vector newHeaders){headers=newHeaders;}
 	
 	/**@return the path of this file */
 	public String getPath(){return path;}
@@ -269,9 +269,11 @@ public class CSVFile
  	 *
  	 * @param header the header to append the data to
  	 * @param rawText the raw text to parse
+ 	 * <p>
+ 	 * Should be a line of raw text from the file in proper JavaCSVReader format see README.txt
  	 *
  	 * @return the given header with the data appended to it
- 	 * @see CSVDataHeader#appendToColumn(String,int) 
+ 	 * @see Vector2D#appendToColumn(Object,int) 
  	 */ 
 	private CSVDataHeader parseHeaderData(CSVDataHeader header, String rawText)
 	{
@@ -280,13 +282,8 @@ public class CSVFile
 		String[] names = header.getNames();
 		//after getting the rawData from the file and the current header for the 
 		//dataHeader filter through the data - limiting only to the number of header 
-		//data available. 
-		for(int j=0;j<names.length;j++)
-		{
-			String dta = "null";
-			if(j < rawData.length) dta = rawData[j];
-			header.appendToColumn(dta,j);
-		}
+
+		header.appendRow(Vector2D.arrayToVector(rawData));
 		return header;
 	}
 
@@ -386,16 +383,14 @@ public class CSVFile
 			}
 			//traverse through the data of the header and create txt
 			String dataText = "\n";
-			Vector dta = dataHeader.getData();
-			int colWidth = dta.size();
-			int rowHeight = ((Vector)(dta.elementAt(0))).size();
+			int colWidth = dataHeader.getTableWidth();
+			int rowHeight = dataHeader.getTableHeight();
 			for(int i=0;i<rowHeight;i++)
 			{
 				dataText+=lineDelimiter;
 				for(int j=0;j<colWidth;j++)
 				{
-					String dat = (String)((Vector)dta.elementAt(j)).elementAt(i);
-					dataText+=dat;
+					dataText+=(String)dataHeader.getItemAt(j,i);
 					if(j+1 < colWidth) dataText+=dataDelimiter;
 				}
 				dataText+="\n";

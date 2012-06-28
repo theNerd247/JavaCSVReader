@@ -78,6 +78,8 @@ public class Vector2D
 		autosize(width+1,Math.max(newColumn.size(),height));
 	}
 
+	public int getTableHeight(){return height;}
+	public int getTableWidth(){return width;}
 	/**
 	 * Adds a new row of objects to the 2D vector
 	 * <p>
@@ -93,7 +95,7 @@ public class Vector2D
 		{
 			Vector col = (Vector)items.elementAt(i);
 			if(i < newRow.size())
-				col.setElementAt(newRow.elementAt(i),i);
+				col.setElementAt(newRow.elementAt(i),col.size()-1);
 		}
 	}
 
@@ -110,7 +112,7 @@ public class Vector2D
 	{
 		autosize(Math.max(width , x+1),Math.max(height, y+1));
 		
-		((Vector)items.elementAt(y)).setElementAt(obj,y);
+		((Vector)items.elementAt(x)).setElementAt(obj,y);
 	}
 
 	/**
@@ -123,7 +125,7 @@ public class Vector2D
    	 */
 	public void appendToColumn(Object obj, int x)
 	{
-		((Vector)items.elementAt(x)).add(obj);
+		setItemAt(obj,x,height);
 	}
 
 	/**
@@ -136,9 +138,7 @@ public class Vector2D
  	 */ 
 	public void appendToRow(Object obj,int y)
 	{
-		//add a new column to contain the new item
-		appendColumn(new Vector(height));
-		((Vector)items.elementAt(width-1)).insertElementAt(obj,y);
+		setItemAt(obj,width,y);
 	}
 
 	/**
@@ -146,14 +146,14 @@ public class Vector2D
  	 * <p>
    	 * <b>NOTE</b>: this method does NOT resize the 
    	 * column the item was contained. Instead the item
-   	 * is simply replaced with a new object
+   	 * is simply replaced with a null object
    	 * @param x the column index
    	 * @param y the row index 
    	 * @exception ArrayIndexOutOfBoundsException - if an invalid index is given 
    	 */
 	public void removeItemAt(int x , int y)
 	{
-		((Vector)items.elementAt(x)).setElementAt(new Object(),y);
+		((Vector)items.elementAt(x)).setElementAt(null,y);
 	}
 	
 	/**
@@ -164,7 +164,7 @@ public class Vector2D
      * @return the object found at that index 
      * @exception ArrayIndexOutOfBoundsException - if an invalid index is given
      */
-	public Object getElementAt(int x, int y)
+	public Object getItemAt(int x, int y)
 	{
 		return ((Vector)items.elementAt(x)).elementAt(y);
 	}
@@ -205,4 +205,37 @@ public class Vector2D
 			items.setElementAt(col,i);
 		}
 	} 
+
+	/**
+ 	 * Utility method that converts an array of Objects to a Vector
+ 	 *
+ 	 * @param objs the array of objects to convert
+ 	 * @return a vector representation of that array
+ 	 */ 
+	public static Vector arrayToVector(Object[] objs)
+	{
+		Vector temp = new Vector(objs.length);
+		for(int i=0;i<objs.length;i++)
+		{
+			temp.add(objs[i]);
+		}
+		return temp;
+	} 
+
+	/**
+ 	 * Utility method that converts a vector to an array of objects
+ 	 *
+ 	 * @param vector the vector to convert
+ 	 * @return an array of objects
+ 	 * @see Vector2D#arrayToVector(Object[])
+ 	 */
+	public static Object[] vectorToArray(Vector vector)
+	{
+		Object[] objs = new Object[vector.size()];
+		for(int i=0;i<objs.length;i++)
+		{
+			objs[i] = vector.elementAt(i);
+		}
+		return objs;
+	}
 }	
