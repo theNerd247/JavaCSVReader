@@ -12,8 +12,8 @@ import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
-import java.util.Scanner;
-import java.util.Vector;
+import java.util.Hashtable;
+import java.util.Enumeration;
 
 /**
  * This class implements a container for holding,reading, and writing 
@@ -29,18 +29,23 @@ public class CSVFile
  	 */
 	private String encoding;
 
-	/** the path of the file to read/write data*/
+	/** 
+ 	 * the path of the file to read/write data
+ 	 * <p>
+ 	 * if <code>path</code> points to an invalid file 
+ 	 * or the file does not exist the file is created 
+ 	 * instead and read/written to. <b>BE CAREFUL</b>
+	 */
 	private String path;
 
 	/** the name of the file (including any file extension) */
 	private String name;
 
-	/** the data headers contained in the file. 
-     * <p> <br>This can be thought of as the spread sheets that are found in a file. 
-     * <br>Each vector contains an Object of type CSVDataHeader.
+	/** 
+ 	 * the data headers contained in the file. 
      * @see CSVDataHeader
      */
-	private Vector headers;
+	private Hashtable headers;
 
 	/** the raw text that is found in the file when reading/writing*/
 	private String rawFileText;
@@ -69,7 +74,7 @@ public class CSVFile
 	{
 		this.path = path;
 		this.encoding = encoding;
-		headers = new Vector();
+		headers = new Hashtable();
 		//go ahead and read the file and create the data headers as 
 		//needed
 		rawFileText = readFileData();
@@ -85,9 +90,7 @@ public class CSVFile
 
 	/** 
  	 * Sets the delimiter to use when parsing a row for data 
- 	 * 
- 	 * @param d the new delimiter to use
- 	 */
+ 	 * * @param d the new delimiter to use */
 	public void setDataDelimiter(String d){dataDelimiter = d;}
 
 	/** 
@@ -107,7 +110,7 @@ public class CSVFile
 	public String getDataDelimiter(){return dataDelimiter;}
 	
 	/** @return the list of headers this file contains */
-	public Vector getHeaders(){return headers;}
+	public Hashtable getHeaders(){return headers;}
 
 	/**
  	 * Sets the entire list of headers to the given list
@@ -116,7 +119,7 @@ public class CSVFile
  	 *
  	 * @param newHeaders the new set of headers to use
  	 */
-	public void setHeaders(Vector newHeaders){headers=newHeaders;}
+	public void setHeaderList(Hashtable newHeaders){headers=newHeaders;}
 	
 	/**@return the path of this file */
 	public String getPath(){return path;}
@@ -260,7 +263,7 @@ public class CSVFile
 		}
 		//add the last workingHeader to the list 
 		if(workingHeader != null)
-			headers.addElement(workingHeader);
+			headers.put(workingHeader.getTitle(),workingHeader);
 	}	
 
 	/** 
@@ -269,9 +272,11 @@ public class CSVFile
  	 *
  	 * @param header the header to append the data to
  	 * @param rawText the raw text to parse
+ 	 * <p>
+ 	 * Should be a line of raw text from the file in proper JavaCSVReader format see README.txt
  	 *
  	 * @return the given header with the data appended to it
- 	 * @see CSVDataHeader#appendToColumn(String,int) 
+ 	 * @see Vector2D#appendToColumn(Object,int) 
  	 */ 
 	private CSVDataHeader parseHeaderData(CSVDataHeader header, String rawText)
 	{
@@ -280,13 +285,8 @@ public class CSVFile
 		String[] names = header.getNames();
 		//after getting the rawData from the file and the current header for the 
 		//dataHeader filter through the data - limiting only to the number of header 
-		//data available. 
-		for(int j=0;j<names.length;j++)
-		{
-			String dta = "null";
-			if(j < rawData.length) dta = rawData[j];
-			header.appendToColumn(dta,j);
-		}
+
+		header.appendRow(Vector2D.arrayToVector(rawData));
 		return header;
 	}
 
@@ -326,20 +326,12 @@ public class CSVFile
 	}
 
 	/**@param header the new header to add to the list of headers this file contains */
-	public void addHeader(CSVDataHeader header){if(header != null) headers.addElement(header);}
+	public void addHeader(CSVDataHeader header){if(header != null) headers.put(header.getTitle(),header);}
 
 	/**@param title the title of the header to remove from the list of headers this file contains */
 	public void removeHeader(String title)
 	{
-		if(title == null || title.equals("")) return;
-		for(int i=0;i<headers.size();i++)
-		{
-			if(title.equals(((CSVDataHeader)headers.elementAt(i)).getTitle()))
-			{
-				headers.removeElementAt(i); 
-				break;
-			}
-		}
+		headers.remove(title);
 	}
 
 	/**
@@ -348,14 +340,7 @@ public class CSVFile
  	 */
 	public CSVDataHeader getHeader(String title)
 	{
-		for(int i=0;i<headers.size();i++)
-		{
-			CSVDataHeader header = (CSVDataHeader)headers.elementAt(i);
-			if(header.getTitle().equals(title))
-				return header;
-		}
-		
-		return null;
+		return (CSVDataHeader)headers.get(title);
 	}
 	
 	/**
@@ -370,11 +355,11 @@ public class CSVFile
 		//first create the delimiters to default. 
 		String fileData= "|"+headerDelimiter+"|"+lineDelimiter+"|"+
 							dataDelimiter+"|";
-		for(int k=0;k<headers.size();k++)
+		for(Enumeration k = headers.elements(); k.hasMoreElements();)
 		{
 			//get the data header for the given sheet and translate the text back into 
 			//the proper format using the files delimiters
-			CSVDataHeader dataHeader = (CSVDataHeader)headers.elementAt(k);
+			CSVDataHeader dataHeader = (CSVDataHeader)k.nextElement();
 			//traverse through the names of the header and create header metadata text 
 			String headerText = "\n"+headerDelimiter+dataHeader.getTitle()+"\n"+headerDelimiter;
 			String[] names = dataHeader.getNames();
@@ -386,16 +371,14 @@ public class CSVFile
 			}
 			//traverse through the data of the header and create txt
 			String dataText = "\n";
-			Vector dta = dataHeader.getData();
-			int colWidth = dta.size();
-			int rowHeight = ((Vector)(dta.elementAt(0))).size();
+			int colWidth = dataHeader.getTableWidth();
+			int rowHeight = dataHeader.getTableHeight();
 			for(int i=0;i<rowHeight;i++)
 			{
 				dataText+=lineDelimiter;
 				for(int j=0;j<colWidth;j++)
 				{
-					String dat = (String)((Vector)dta.elementAt(j)).elementAt(i);
-					dataText+=dat;
+					dataText+=(String)dataHeader.getItemAt(j,i);
 					if(j+1 < colWidth) dataText+=dataDelimiter;
 				}
 				dataText+="\n";
