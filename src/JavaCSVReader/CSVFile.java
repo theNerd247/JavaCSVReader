@@ -7,9 +7,7 @@
 
 package JavaCSVReader;
 
-import java.io.InputStreamReader;
 import java.io.File;
-import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.util.Hashtable;
@@ -143,33 +141,16 @@ public class CSVFile
 	{
 		if(path.equals("") || path == null) return null;
 		String data = new String();
-		try{
+		try
+		{
 			File fl = new File(path);
 			FileInputStream file = new FileInputStream(fl);
 			name = fl.getName();
-			InputStreamReader in = new InputStreamReader(file);
-			data = new String(new byte[0], encoding);
-			//read data and check if it is the EOF character, if not then 
-			//add the concatenate the data to the current data string using the 
-			//given encoding typ
-			while(true)
-			{
-				int raw = in.read();
-				if(raw == -1) break;
-				//read the value and convert to a a string by wrapping it in a byte array
-				//then use that to create a new string and append to the current data. 
-				byte value = (new Integer(raw)).byteValue();
-				byte[] temp = {value};
-				data = data+new String(temp,encoding);
-			}
-
-			//close stream when done
-			in.close();
+			data = FileIO.readFileData(file,encoding);
 		}
 		catch(Exception e)
 		{
-			//possibly create a logging class to cache error messages
-			System.out.println(e.getMessage()); return new String();
+			;//don't do anything yet
 		}
 		return data;
 	}
@@ -187,14 +168,11 @@ public class CSVFile
 			//open the file to write (overwrite any data in the file)
 			FileOutputStream fileStream = new FileOutputStream(fl,false);
 			name = fl.getName();
-			OutputStreamWriter out = new OutputStreamWriter(fileStream,encoding);
-			out.write(data,0,data.length());
-			out.flush();
-			out.close();
+			FileIO.writeFileData(data,fileStream,encoding);
 		}
 		catch(Exception e)
 		{
-			System.out.println(e.getMessage()); return;
+			return;
 		}
 	}
 
