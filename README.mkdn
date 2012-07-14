@@ -1,0 +1,135 @@
+# JAVA CSV READER Library                                                      #   
+# FOR: Java based FRC robots.                                                  #   
+# LICENSE: BSD 2-Clause.                                                       #   
+# REQUIRED APIs: Standard FRC Java Lib (as of 2012) - not Standard API library.#   
+
+DESCRIPTION
+--------------
+
+JavaCSVReader is a very light-weight library built for implementing a custom
+and standard CSV file parsing/operations. This library is also the base of the
+FRC-CSV API that is used for configuring FRC robots. 
+
+JAVACSV FILE FORMAT
+-------------------
+
+The JavaCSV file is a custom CSV file that is used to contain multiple
+spreadsheets of data. Spreadsheets are grouped together in what is called a
+data-header (or more simply a header). Each header begins with two lines of
+header-metadata and ends with the last element of the data for that header. Data
+within a header is formatted into a table. 
+
+### DELIMITERS ###
+
+In order to allow for the parser to segregate multiple headers of data and their
+properties each line must contain special delimiter characters to denote what
+data the line of text contains. 
+
+3 delimiters are used: 
+
+* Header-Delimiter: a special character to denote meta-data for a header
+* Line-Delimiter: a special character to denote a row of data for a header
+* Data-Delimiter: a special character to use to seperate data and meta-data
+
+Because each user can have any kind of data stored - and thus any kind of
+characters - in the JavaCSV file, the delimiters can be set to any character
+that is unique and not found in the data or meta-data. 
+
+### FILE META-DATA ### 
+
+On the first line of the JavaCSV file there **MUST** be a file meta-data
+sequence. This line sets the delimiters that are used in the file. The file
+meta-data line must go as follows: 
+
+<Character>Header-Delimiter<Character>Line-Delimiter<Character>Data-Delimiter<Character>
+
+Where <Character> is a unique character from the 3 delimiters. 
+
+Below is an example of what the file meta-data line is to look like. 
+
+    |#|;|,|
+
+In this case the "|" character is the <Character> and the 3 delimiters are in
+their proper order.
+
+### HEADERS ### 
+	
+Headers are formatted to allow for custom formatting of tables. Each header must
+contain two lines of meta-data that are each denotenoted by the header-delimiter
+character at the beginning of each line. The first line of the header-meta-data
+contains the header's title (this is the equivalent of the spreadsheet's name). 
+The second line of the meta-data contains the title's of the header's columns.
+Each column title is seperated by the data-delimiter character. 
+
+Below is an example of how a properly formatted header's meta-data should look.
+
+    #Header Title
+    #ColumnTitle-1,ColumnTitle-2,ColumnTitle-1
+
+In this case the header-delimiter character is the "#". Notice how each
+header-delimiter character is the first character in the lines. This is a
+**MUST**. Also, notice each column title is seperated by a comma. Naturally this
+is obvious, however the comma could be replaced by another character (as long as
+it is the data-delimiter character which is a **MUST**).
+
+### Data ###
+
+The data for a header begins directly under the header-metadata lines. Each new
+row of data is denoted by the line-delimiter character as the very first
+character in the row of data. The data in a row is seperated by a data-delimiter
+character. 
+
+Below is an example of how two rows of data should appear in a JavaCSV file. 
+
+	;data1,data2,data3
+    ;dataA1,,dataA3
+    ;dataB1,dataB2,
+
+*NOTE:* Data in a row does not have to fill all columns of data. As seen above
+column 2 was skipped in row 2, and column 3 was skipped in row 3. 
+
+### Comments ### 
+
+Some times it's good to leave comments in the file to tell people details about
+the data. Comments are simple: insert a line of text whos first character does
+not begin with either the line-delimiter or header-delimiter character, and the
+comment is not found in a row of data or meta-data.  
+For example:
+
+    This is a comment
+    that spans multiple lines 
+    of text. As long as the first 
+    character in each line does not contain the header-delmiter character (#) 
+    or the line-delimiter character (;) the parser will ignore these lines.
+    #Header-Title
+    #Column1,Column2 
+    This is another comment that spans a single line
+    ;firstData,secondData
+
+For most programers the norm of creating comments is using the "//" or "/* */"
+characters for single line or multi-line comments. This also works with the
+JavaCSV file as long as the comments are not on the same line of text. 
+
+Below is an example of *how not to use comments*
+
+    #DONE PLACE COMMENTS HERE Header_Title DONT PLACE COMMENTS HERE
+    #Column1,Colum2 THIS COMMENT WILL BECOME PART OF Column2's title
+    ;Data,data THIS COMMENT WILL BECOME PART OF THE LAST DATA IN THE ROW
+
+EXAMPLE JAVACSV FILE
+--------------------
+Below is an example JavaCSV file. It contains 2 headers of data (equivalent to 2
+spreadsheets of data).
+
+    |#|;|,|
+
+    #First Header Title
+    #Column1,Column2
+    ;data1,data2
+
+    #Second Header Title 
+    #Column1,Column2,Column3
+    ;data,data,moredata
+    ;evenmore data
+
+
