@@ -27,8 +27,8 @@ public class AccelerometerParser extends DeviceParser
 	public  RobotDevice createDevice(Vector data)
 	{
 		String name = (String)data.elementAt(0);
-		int slot = ((Integer)data.elementAt(2)).intValue();
-		int port = ((Integer)data.elementAt(3)).intValue();
+		int slot = Integer.parseInt((String)data.elementAt(2));
+		int port = Integer.parseInt((String)data.elementAt(3));
 		Accelerometer newDev = new Accelerometer(slot,port);
 		return new RobotDevice(name,newDev);
 	}

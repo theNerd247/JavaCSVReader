@@ -7,12 +7,14 @@
 
 package frcCSVAPI;
 
-import JavaCSVReader.CSVFile;
-import JavaCSVReader.CSVDataHeader;
-import frcCSVAPI.parsers.*;
-import java.util.Hashtable;
 import com.sun.squawk.microedition.io.FileConnection;
+import frcCSVAPI.parsers.*;
+import JavaCSVReader.CSVFile;
+import JavaCSVReader.FileIO;
+import JavaCSVReader.CSVDataHeader;
 import javax.microedition.io.Connector;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * This class is the intercacing class 
@@ -45,14 +47,15 @@ public class RobotConfig extends CSVFile
 		createDevices();		
 	}
 
-	/** Overrides {@link JavaCSVReader.CSVFile#readFileData()} */ 
-	private String readFileData()
+
+	/** Overrides {@link JavaCSVReader.CSVFile#readFileData()} */ /*
+	protected String readFileData()
 	{
 		if(path.equals("") || path == null) return null;
 		String data = new String();
 		try
 		{
-			FileConnection fl = Connector.open(path,Connector.READ);
+			FileConnection fl = (FileConnection)Connector.open(path,Connector.READ);
 			
 			name = fl.getName();
 			FileIO.readFileData(fl.openInputStream(), encoding);
@@ -64,23 +67,24 @@ public class RobotConfig extends CSVFile
 		}
 		return data;
 	}
-
-	/** Overriedes {@link JavaCSVReader.CSVFile#writeFileData()}*/
-	private String writeFileData(String data)
+*/
+	/** Overriedes {@link JavaCSVReader.CSVFile#writeFileData()}*/ /*
+	protected void writeFileData(String data)
 	{
 		try
 		{
-			FileConnection fl = Connector.open(path,Connector.WRITE);
+			FileConnection fl = (FileConnection)Connector.open(path,Connector.WRITE);
 			
 			name = fl.getName();
 			//open the file to write (overwrite any data in the file)
-			FileIO.writeFileData(data,fl.openOutputStream,encoding);
+			FileIO.writeFileData(data,fl.openOutputStream(),encoding);
 		}
 		catch(Exception e)
 		{
 			return;
 		}
 	}
+*/
 	
 	/**
  	 * Initializes default parsers for devices
@@ -91,7 +95,7 @@ public class RobotConfig extends CSVFile
 		DeviceParserManager.addParser(new CompressorParser());
 		DeviceParserManager.addParser(new EncoderParser());
 		DeviceParserManager.addParser(new EncoderParser());
-		DeviceParserManager.addParser(new GyroParserParser());
+		DeviceParserManager.addParser(new GyroParser());
 		DeviceParserManager.addParser(new JaguarParser());
 		DeviceParserManager.addParser(new RelayParser());
 		DeviceParserManager.addParser(new ServoParser());
@@ -105,7 +109,7 @@ public class RobotConfig extends CSVFile
  	 * <b>If no parser is found (given in the 2nd item of a CSVDataHeader row)
  	 * then no device is created</b>
  	 */
-	private createDevices()
+	private void createDevices()
 	{
 		CSVDataHeader header = getHeader("Devices");
 		//iterates through all the rows in the data-header. 

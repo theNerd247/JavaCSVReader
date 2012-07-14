@@ -27,10 +27,10 @@ public class CompressorParser extends DeviceParser
 	public  RobotDevice createDevice(Vector data)
 	{
 		String name = (String)data.elementAt(0);
-		int switchSlot = ((Integer)data.elementAt(2)).intValue();
-		int switchChannel = ((Integer)data.elementAt(3)).intValue();
-		int relaySlot = ((Integer)data.elementAt(4)).intValue();
-		int relayChannel = ((Integer)data.elementAt(5)).intValue();
+		int switchSlot = Integer.parseInt((String)data.elementAt(2));
+		int switchChannel = Integer.parseInt((String)data.elementAt(3));
+		int relaySlot = Integer.parseInt((String)data.elementAt(4));
+		int relayChannel = Integer.parseInt((String)data.elementAt(5));
 		Compressor newDev = new Compressor(switchSlot,switchChannel
 								,relaySlot,relayChannel);
 		return new RobotDevice(name,newDev);

@@ -25,7 +25,7 @@ public class CSVFile
 	/** the encoding type of the file 
  	 *  @see java.io.OutputStreamWriter
  	 */
-	private String encoding;
+	protected String encoding;
 
 	/** 
  	 * the path of the file to read/write data
@@ -34,25 +34,25 @@ public class CSVFile
  	 * or the file does not exist the file is created 
  	 * instead and read/written to. <b>BE CAREFUL</b>
 	 */
-	private String path;
+	protected String path;
 
 	/** the name of the file (including any file extension) */
-	private String name;
+	protected String name;
 
 	/** 
  	 * the data headers contained in the file. 
      * @see CSVDataHeader
      */
-	private Hashtable headers;
+	protected Hashtable headers;
 
 	/** the raw text that is found in the file when reading/writing*/
-	private String rawFileText;
+	protected String rawFileText;
 
 	//defalut delimiters for a file
 	//when writing a new file these are the delimiters used
-	private String headerDelimiter="#";
-	private String lineDelimiter=";";
-	private String dataDelimiter=","; 
+	protected String headerDelimiter="#";
+	protected String lineDelimiter=";";
+	protected String dataDelimiter=","; 
 
 	/**
      * Constructs a new file that is ascii encoded
@@ -137,7 +137,7 @@ public class CSVFile
  	 * @return the raw text contained in the file
  	 * @see CSVFile#path for details on where to read the data from
  	 */ 
-	private String readFileData()
+	protected String readFileData()
 	{
 		if(path.equals("") || path == null) return null;
 		String data = new String();
@@ -160,7 +160,7 @@ public class CSVFile
  	 *
  	 * @param data the String of data to write to the file
  	 */ 
-	private void writeFileData(String data)
+	protected void writeFileData(String data)
 	{
 		try
 		{
@@ -256,7 +256,7 @@ public class CSVFile
  	 * @return the given header with the data appended to it
  	 * @see Vector2D#appendToColumn(Object,int) 
  	 */ 
-	private CSVDataHeader parseHeaderData(CSVDataHeader header, String rawText)
+	protected CSVDataHeader parseHeaderData(CSVDataHeader header, String rawText)
 	{
 		if(header == null) return header;
 		String[] rawData = StringUtils.split(rawText.substring(1),dataDelimiter);
@@ -276,7 +276,7 @@ public class CSVFile
   	 * @param text the raw text to use to parse for the delimiters.
   	 * <br><pre>This is normally the FIRST line in a file
   	 */ 
-	private void parseFileMetaData(String text)
+	protected void parseFileMetaData(String text)
 	{
 		String del = text.substring(0,1);
 		String[] dels = StringUtils.rawSplit(text.substring(1),del);
@@ -293,12 +293,13 @@ public class CSVFile
 	 * @param rawText the rawText to parse for creating the new CSVDataHeader
 	 * @return the new CSVDataHeader created based on the given text
 	 */
-	private CSVDataHeader createNewHeader(String rawText)
+	protected CSVDataHeader createNewHeader(String rawText)
 	{
 		//split the lines, then get the title from the first
 		//and the data names from the second
 		String[] headerLines = StringUtils.split(rawText,"\n");
 		String title = headerLines[0].substring(1);
+		System.out.println(title);
 		String[] names = StringUtils.split(headerLines[1],dataDelimiter,1);
 		return new CSVDataHeader(title,names);	
 	}
@@ -328,7 +329,7 @@ public class CSVFile
 	 * @return the raw text created
 	 * @see CSVFile#save()
 	 */
-	private String createRawText()
+	protected String createRawText()
 	{
 		//first create the delimiters to default. 
 		String fileData= "|"+headerDelimiter+"|"+lineDelimiter+"|"+

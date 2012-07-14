@@ -27,10 +27,10 @@ public class EncoderParser extends DeviceParser
 	public  RobotDevice createDevice(Vector data)
 	{
 		String name = (String)data.elementAt(0);
-		int aSlot = ((Integer)data.elementAt(2)).intValue();
-		int aChannel = ((Integer)data.elementAt(3)).intValue();
-		int bSlot = ((Integer)data.elementAt(4)).intValue();
-		int bChannel = ((Integer)data.elementAt(5)).intValue();
+		int aSlot = Integer.parseInt((String)data.elementAt(2));
+		int aChannel = Integer.parseInt((String)data.elementAt(3));
+		int bSlot = Integer.parseInt((String)data.elementAt(4));
+		int bChannel = Integer.parseInt((String)data.elementAt(5));
 		boolean direction = ((Boolean)data.elementAt(6)).booleanValue();
 		Encoder newDev = new Encoder(aSlot,aChannel,bSlot,bChannel,direction);
 		return new RobotDevice(name,newDev);

@@ -9,6 +9,7 @@ package frcCSVAPI;
 
 import JavaCSVReader.StringUtils;
 import java.util.Hashtable;
+import frcCSVAPI.parsers.DeviceParser;
 
 /**
  * This class acts as a container for robot device
@@ -27,7 +28,7 @@ public class DeviceParserManager
  	 */ 	
 	public static void addParser(DeviceParser newParser)
 	{
-		parsers.put(newParser.getName(),parser);
+		parsers.put(newParser.getName(),newParser);
 	}
 
 	/**

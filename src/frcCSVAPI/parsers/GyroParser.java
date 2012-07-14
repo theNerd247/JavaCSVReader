@@ -27,8 +27,8 @@ public class GyroParser extends DeviceParser
 	public  RobotDevice createDevice(Vector data)
 	{
 		String name = (String)data.elementAt(0);
-		int slot = ((Integer)data.elementAt(2)).intValue();	
-		int channel = ((Integer)data.elementAt(3)).intValue();
+		int slot = Integer.parseInt((String)data.elementAt(2));	
+		int channel = Integer.parseInt((String)data.elementAt(3));
 		Gyro newDev = new Gyro(slot,channel);
 		return new RobotDevice(name,newDev);
 	}
