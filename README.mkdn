@@ -20,7 +20,7 @@ data-header (or more simply a header). Each header begins with two lines of
 header-metadata and ends with the last element of the data for that header. Data
 within a header is formatted into a table. 
 
-### DELIMITERS ###
+###DELIMITERS
 
 In order to allow for the parser to segregate multiple headers of data and their
 properties each line must contain special delimiter characters to denote what
@@ -36,7 +36,7 @@ Because each user can have any kind of data stored - and thus any kind of
 characters - in the JavaCSV file, the delimiters can be set to any character
 that is unique and not found in the data or meta-data. 
 
-### FILE META-DATA ### 
+### FILE META-DATA  
 
 On the first line of the JavaCSV file there **MUST** be a file meta-data
 sequence. This line sets the delimiters that are used in the file. The file
@@ -53,7 +53,7 @@ Below is an example of what the file meta-data line is to look like.
 In this case the "|" character is the <Character> and the 3 delimiters are in
 their proper order.
 
-### HEADERS ### 
+### HEADERS  
 	
 Headers are formatted to allow for custom formatting of tables. Each header must
 contain two lines of meta-data that are each denotenoted by the header-delimiter
@@ -73,7 +73,7 @@ header-delimiter character is the first character in the lines. This is a
 is obvious, however the comma could be replaced by another character (as long as
 it is the data-delimiter character which is a **MUST**).
 
-### Data ###
+### Data 
 
 The data for a header begins directly under the header-metadata lines. Each new
 row of data is denoted by the line-delimiter character as the very first
@@ -89,7 +89,7 @@ Below is an example of how two rows of data should appear in a JavaCSV file.
 *NOTE:* Data in a row does not have to fill all columns of data. As seen above
 column 2 was skipped in row 2, and column 3 was skipped in row 3. 
 
-### Comments ### 
+### Comments  
 
 Some times it's good to leave comments in the file to tell people details about
 the data. Comments are simple: insert a line of text whos first character does
