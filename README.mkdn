@@ -203,15 +203,15 @@ parsers for the below devices. The constructors for the devices are also shown.
 **NOTE** a new parser must be created if you wish to use a different constructor
 for a given device.
 
-	* Accelerometer(int slot, int channel)
-	* Compressor(int pressureSwitch_Slot, int pressureSwitch_Channel, int
-	      relaySlot, int RelayChannel) 
-	* Encoder(int a_slot, int b_slot, int a_channel, int b_channel)
-	* Gyro(int slot, int channel)
-	* Jaguar(int slot, int channel)
-	* Relay(int slot, int channel)
-	* Solenoid(int slot, int channel)
-	* Victor(int slot, int channel)
+* Accelerometer(int slot, int channel)
+* Compressor(int pressureSwitch_Slot, int pressureSwitch_Channel, int
+      relaySlot, int RelayChannel) 
+* Encoder(int a_slot, int b_slot, int a_channel, int b_channel)
+* Gyro(int slot, int channel)
+* Jaguar(int slot, int channel)
+* Relay(int slot, int channel)
+* Solenoid(int slot, int channel)
+* Victor(int slot, int channel)
 
 If the device or constructor for your device is not found worry not! You can
 make your own. Simply implement the DeviceParser interface in your custom device
