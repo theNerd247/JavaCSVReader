@@ -2,7 +2,6 @@ JAVA CSV READER Library
 =======================
 FOR: Java based FRC robots.                                                     
 LICENSE: BSD 2-Clause.                                                          
-REQUIRED APIs: Standard FRC Java Lib (as of 2012) - not Standard API library.   
 
 DESCRIPTION
 --------------
@@ -133,4 +132,157 @@ spreadsheets of data).
     ;data,data,moredata
     ;evenmore data
 
+FRC-CSV API
+===========
 
+DESCRIPTION
+----------- 
+
+The frcCSVAPI package is an api that implements robot configuration and data
+storage. It uses the JavaCVSReader library as an interface for low level data
+operations such as reading and writing data and managing headers.
+
+REQUIREMENTS
+------------
+
+Java FRC API 2010 or greater
+
+USING THE FRC-CSV API
+---------------------
+
+Implementing the frcCSVAPI in your FRC robot project is very easy. To allow a
+robot project to use the API follow the simple steps below. 
+
+1. Download and "install" frcCSVAPI package and its dependencies. 
+   
+   1. To download the api go to follow [this][1] link
+   and download the zip file available. Extract the 
+   files to your desktop or an arbitrary location.
+
+   2. Copy the directories (or folders) located in the
+   src directory that you extracted from the zip file
+   from above to the location of your FRC project source
+   code. For example: Let's say my source files for the
+   FRC project are located in 
+   C:\Users\Developer\Desktop\frcProject\src\edu\wpi\first\wpilibj\
+   (That is in this directory you would find your RobotMain.java).
+   I would copy the frcCSVAPI and JavaCSVReader directories to this
+   directory. 
+
+   **NOTE** step 2 must be performed for every frc project you wish
+   to use. If you don't want to copy the files every time you create
+   a new project, modify your class path variable (this is different
+   for each IDE you use) to point to the location of the src folder
+   from the zip you downloaded in step 1.
+
+2. Import the package into your RobotMain class and implement usage. 
+
+3. In your RobotMain class copy the below code and add it to the 
+    constructor of the class. 
+
+    //Uncomment the below line to add custom DeviceParser classes
+    //DeviceParserManager.addParser(...)
+    
+    //read configuration data and create devices
+    RobotConfig robotConfig = new RobotConfig();
+
+**NOTE** You must call the above lines *before* you call methods 
+from devices created by the RobotConfig. 
+
+USAGE FOR PROGRAMMERS
+---------------------
+
+Below is some basic usage of the frcCSVAPI. For more details and documentation
+please see the javadoc included in the download. 
+
+### ADDING PARSERS
+
+Because each robot device has a different constructor set up, unique parser
+classes are needed for each device created. By default the frcCSVAPI contains
+parsers for the below devices. The constructors for the devices are also shown.
+**NOTE** a new parser must be created if you wish to use a different constructor
+for a given device.
+
+	* Accelerometer(int slot, int channel)
+	* Compressor(int pressureSwitch_Slot, int pressureSwitch_Channel, int
+	      relaySlot, int RelayChannel) 
+	* Encoder(int a_slot, int b_slot, int a_channel, int b_channel)
+	* Gyro(int slot, int channel)
+	* Jaguar(int slot, int channel)
+	* Relay(int slot, int channel)
+	* Solenoid(int slot, int channel)
+	* Victor(int slot, int channel)
+
+If the device or constructor for your device is not found worry not! You can
+make your own. Simply implement the DeviceParser interface in your custom device
+class, and set the `name` variable to "[insert name of device here]Parser". Then
+add the parser to the DeviceParserManager by inserting the above code **BEFORE**
+you call the RobotConfig constructor. 
+
+    DeviceParserManager.addParser(new [insert name of device here]Parser());
+
+This will add the parser to the list of parsers and allow you to add devices to
+the JavaCSV file that use this parser (see FRC JavaCSV file format).  
+
+### GETTING A DEVICE
+
+Once the constructor of the RobotConfig class is called all the devices found
+are created. To use a device created by the RobotConfig class follow the below
+template.
+
+    <Device Class> varName = (<Device Class>)RobotConfig.getDevice("<name of device>")
+
+For example: let's say I want a Jaguar that is named "FrontLeftMotor". Below is
+the code I would use to access this device:
+
+    Jaguar flMotor = (Jaguar)RobotConfig.getDevice("FrontLeftMotor");
+
+FRC JAVACSV FILE FORMAT (the frcCSV file)
+-----------------------------------------
+
+In order for the frcCSVAPI to work a certain file needs to be downloaded onto
+the cRIO. This file **MUST** be in JavaCSV format and must be ASCII encoded.
+Further, the file must be specifically formatted in order for the parsers to
+work correctly in the frcCSVAPI. (For this documentation we will refer to this
+file as the frcCSV file).
+
+First the  frcCSV file must contain ALL of its device config data in a single
+header that has the header title "Devices". Column titles are not parsed as so
+can be named anything. However, *the order  of the data is very important*. 
+
+* The first column of the header **MUST** be the name of the device. 
+
+* The second column **MUST** be the name of the parser to use for that row of
+  data. For example: use JaguarParser if that row contains data for a Jaguar
+  device.
+
+* The rest of that column data in a row contains the argument values you wish to
+  use for that device's constructor. The argument values are the values you
+would normally use for that device's constructor. The order, type, and amount of
+values are determined by the type of parser used. In the example below the
+JaguarParser parser is used. This is a default parser and uses this Jaguar
+constructor: Jaguar(int slot, int channel). So then the third column for that
+row would be the slot value, and the fourth column for that row would be the
+channel value.
+
+Below is an example of how the device header should be formatted: 
+
+    #Devices
+    #Name,ParserType,Arg1,Arg2,Arg3
+    
+    //Jaguar devices:           slot,channel
+	;FrontLeftMotor,JaguarParser,1,2
+    
+    //Sensors : aSlot,bSlot,aChnl,bChnl,reverse?
+	;Encoder,EncoderParser,1,1,1,2,true
+
+USAGE FOR NON-PROGRAMMERS
+-------------------------
+
+This api has a very easy to use interface. Simply edit the frcCSV file and
+upload it to the cRIO and the reboot the robot! This makes it easy to change
+ports and other data for robot devices on the fly and makes it very usefull
+during competitions.
+
+A GUI interface (ergo you don't have to edit a file anymore) can also be used to
+change config data. 

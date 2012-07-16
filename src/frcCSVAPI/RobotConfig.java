@@ -48,7 +48,7 @@ public class RobotConfig extends CSVFile
 	}
 
 
-	/** Overrides {@link JavaCSVReader.CSVFile#readFileData()} */ /*
+	/** Overrides {@link JavaCSVReader.CSVFile#readFileData()} */ 
 	protected String readFileData()
 	{
 		if(path.equals("") || path == null) return null;
@@ -67,8 +67,8 @@ public class RobotConfig extends CSVFile
 		}
 		return data;
 	}
-*/
-	/** Overriedes {@link JavaCSVReader.CSVFile#writeFileData()}*/ /*
+
+	/** Overriedes {@link JavaCSVReader.CSVFile#writeFileData()}*/ 
 	protected void writeFileData(String data)
 	{
 		try
@@ -84,8 +84,7 @@ public class RobotConfig extends CSVFile
 			return;
 		}
 	}
-*/
-	
+
 	/**
  	 * Initializes default parsers for devices
  	 */ 
@@ -119,7 +118,7 @@ public class RobotConfig extends CSVFile
 		for(int i=0;i<header.getTableHeight();i++)
 		{
 			Vector row = header.getRow(i);
-			String parserName = ((String)row.elementAt(1))+"Parser";
+			String parserName = ((String)row.elementAt(1));
 			DeviceParser parser = DeviceParserManager.getParser(parserName);
 			if(parser == null) continue;
 			RobotDevice device = parser.createDevice(row);
