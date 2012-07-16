@@ -170,6 +170,35 @@ public class Vector2D
 	}
 
 	/**
+ 	 * Returns a row of data in Vector format
+ 	 *
+ 	 * @param y the row index
+ 	 * @return the row of data given by the row index
+ 	 * @exception ArrayIndexOutOfBounds if index is not valid
+ 	 */ 
+	public Vector getRow(int y)
+	{
+		Vector buffer = new Vector(width);
+		for(int i=0;i<width;i++)
+		{
+			buffer.addElement(((Vector)items.elementAt(i)).elementAt(y));
+		}
+		return buffer;
+	}
+
+	/**
+ 	 * Returns a column of data in Vector format
+ 	 *
+ 	 * @param x the column index
+ 	 * @return the column data
+ 	 * @exception ArrayIndexOutOfBounds if index is not valid
+ 	 */
+	public Vector getColumn(int x)
+	{
+		return (Vector)items.elementAt(x);
+	}
+
+	/**
      * Returns the table items that this 2D vector contains 
      *
      * @return A vector that contains other vectors than in turn contain items
