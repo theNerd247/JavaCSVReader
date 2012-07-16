@@ -8,7 +8,6 @@
 package JavaCSVReader;
 
 import java.util.Vector;
-
 /**
  * This class implements a "spreadsheet" which contains data in
  * columns and rows. 

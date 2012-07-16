@@ -1,0 +1,44 @@
+FORMATTING OF JAVACSV FILE 
+===========================
+The format of the CSV file that is written to the CRio must be compatable with
+the JavaCSVReader format (see README.txt). However, because of a need for a
+unified format in order to be able to parse the file and create FRC based
+objects. 
+
+The formatting of the CRio-CSV file is an abstraction of the JavaCSVReader
+format. It follows all rules and such, however there is a small extension of
+these rules. 
+
+All devices MUST be in the same header. The first column MUST be the name of the
+device,and the second column MUST be the type of device, all other columns
+represent the arguments to the constructors of the devices respectively. For
+example below would be a layout of the drive motors for a 4 motor drive. 
+
+...
+
+#Devices#
+#Name,Type,arg1,arg2,arg3
+;FrontLeftDrive,Jaguar,1,1,1
+;FrontRightDrive,Jaguar,1,1,2
+;BackLeftDrive,Jaguar,1,1,3
+;BackRightDrive,Jaguar,1,1,4
+
+...
+
+Because of the uncertainty of future devices and their constructors, the default
+parser creates ONLY the below devices:
+
+Jaguar
+Vector
+Servo
+Relay
+Compressor
+Solenoid
+Accelerometer
+Encoder
+Gyro
+
+NOTE: you are not limited to these devices only. This simply means that parsers
+are written for these devices only. You can create your own parsers and add them 
+to the list of parsers. See the javadoc for the RobotConfig class for more
+details. 
