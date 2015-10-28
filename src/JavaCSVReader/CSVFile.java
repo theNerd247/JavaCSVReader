@@ -70,8 +70,8 @@ public class CSVFile
  	 */ 
 	public CSVFile(String newPath, String newEncoding)
 	{
-		newPath = path;
-		newEncoding = encoding;
+		path = newPath;
+		encoding = newEncoding;
 		headers = new Hashtable();
 		//go ahead and read the file and create the data headers as 
 		//needed
