@@ -68,10 +68,10 @@ public class CSVFile
  	 * @param path the path of the file to create 
  	 * @param encoding the encoding of the text in the file
  	 */ 
-	public CSVFile(String path, String encoding)
+	public CSVFile(String newPath, String newEncoding)
 	{
-		this.path = path;
-		this.encoding = encoding;
+		path = newPath;
+		encoding = newEncoding;
 		headers = new Hashtable();
 		//go ahead and read the file and create the data headers as 
 		//needed

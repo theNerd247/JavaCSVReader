@@ -33,10 +33,10 @@ public class CSVDataHeader extends Vector2D
  	 * @param title the title of the new CSVDataHeader
  	 * @param names the names of the columns of the new CSVDataHeader
  	 */ 
-	public CSVDataHeader(String title, String[] names)
+	public CSVDataHeader(String newTitle, String[] newNames)
 	{
-		this.names = names;
-		this.title = title;
+		names = newNames;
+		title = newTitle;
 	}
 
 	/**
@@ -45,21 +45,30 @@ public class CSVDataHeader extends Vector2D
      * @return Vector the 2D vector containing the data
      * @see Vector2D#getItems()
      */ 
-	public Vector getData(){return getItems();}
+	public Vector getData()
+	{
+		return getItems();
+	}
 
 	/**
 	 * Returns the title of the CSVDataHeader
 	 *
 	 * @return String title of the data header
 	 */
-	public String getTitle(){return title;}
+	public String getTitle()
+	{
+		return title;
+	}
 
 	/**
      * Returns an array of the column names 
      *
      * @return String[] the array of column names
      */
-	public String[] getNames(){return names;}
+	public String[] getNames()
+	{
+		return names;
+	}
 
 }
 

@@ -43,7 +43,11 @@ public class Vector2D
  	 * Constructs a new 2D vector with initial table size
      * of 0x0
      */
-	public Vector2D(){this(0,0);}
+	public Vector2D()
+	{
+		this(0,0);
+		//Calls constructor Vector2D(int,int)
+	}
 
 	/**
   	 * Constructs a new 2D vector of initial vector-capacity
@@ -52,10 +56,10 @@ public class Vector2D
   	 * @param width the number of columns the 2D vector is to contain
   	 * @param height the number of rows the 2D vector is to contain
   	 */ 
-	public Vector2D(int width, int height)
+	public Vector2D(int newWidth, int newHeight)
 	{
-		this.width = width;
-		this.height = height;
+		width = newWidth;
+		height = newHeight;
 		//initialize the containing vector
 		//and the column containers to 
 		//have an increment size to that of 2
@@ -78,8 +82,16 @@ public class Vector2D
 		autosize(width+1,Math.max(newColumn.size(),height));
 	}
 
-	public int getTableHeight(){return height;}
-	public int getTableWidth(){return width;}
+	//Getters for height and width
+	public int getTableHeight()
+	{
+		return height;
+	}
+	
+	public int getTableWidth()
+	{
+		return width;
+	}
 	/**
 	 * Adds a new row of objects to the 2D vector
 	 * <p>
